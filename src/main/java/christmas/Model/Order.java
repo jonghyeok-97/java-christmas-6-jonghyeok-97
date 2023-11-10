@@ -27,7 +27,9 @@ public class Order {
             int count = 0;
             try {
                 count = Integer.parseInt(s.substring(idx + 1));
-
+                if (count <= 0) {
+                    throw new NumberFormatException();
+                }
             } catch (NumberFormatException error) {
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
