@@ -9,11 +9,12 @@ public class Order {
 
 
     public Order(String input) throws IllegalArgumentException {
-
+        validate(input);
     }
 
     private void validate(String input) {
         validateSplitedDelemeter(input);
+        validateEndsWithDelemeter(input);
     }
 
     private void validateSplitedDelemeter(String input) {
@@ -21,7 +22,13 @@ public class Order {
                 .filter(String::isEmpty)
                 .findAny()
                 .ifPresent(splited -> {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
                 });
+    }
+
+    private void validateEndsWithDelemeter(String input) {
+        if (input.endsWith(",")) {
+            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        }
     }
 }
