@@ -17,4 +17,20 @@ public class VisitDateTest {
         Assertions.assertThatThrownBy(() -> new VisitDate(day))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @DisplayName("날짜가 1~31일 사이면 통과 테스트")
+    @ParameterizedTest
+    @ValueSource(strings = {"1", "31", "10", "3"})
+    void not_range(String validDay) {
+        Assertions.assertThatCode(() -> new VisitDate(validDay))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("날짜가 1~31일 사이가 아니면 예외 발생 테스트")
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "32", "50"})
+    void not_range_2(String invalidDay) {
+        Assertions.assertThatThrownBy(() -> new VisitDate(invalidDay))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
