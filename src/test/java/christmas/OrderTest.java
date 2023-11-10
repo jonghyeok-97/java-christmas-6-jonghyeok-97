@@ -23,4 +23,12 @@ public class OrderTest {
         Assertions.assertThatThrownBy(() -> new Order(input))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"고기-20,파스타-1"})
+    @DisplayName("메뉴 개수가 21개 이상이면 예외 테스트")
+    void create_Order3(String input) {
+        Assertions.assertThatThrownBy(() -> new Order(input))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
