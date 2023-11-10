@@ -1,15 +1,41 @@
 package christmas.Model;
 
-import java.util.Arrays;
+
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Order {
-
+    //private final Map<MenuBoard, Integer> order;
 
     public Order(String input) throws IllegalArgumentException {
         validate(input);
+        List<String> dashes = Stream.of(input.split(","))
+                .collect(Collectors.toList());
+
+        int totalCount = 0;
+        for (String s : dashes) {
+            int idx = s.indexOf('-');
+            if (idx == -1) {
+                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            }
+            String menu = s.substring(0, idx);
+            if (menu.isEmpty()) {
+                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            }
+            int count = 0;
+            try {
+                count = Integer.parseInt(s.substring(idx + 1));
+
+            } catch (NumberFormatException error) {
+                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            }
+            totalCount += count;
+
+            //MenuBoard.compare(menu);
+        }
+        
     }
 
     private void validate(String input) {
