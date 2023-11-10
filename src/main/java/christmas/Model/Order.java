@@ -1,8 +1,10 @@
 package christmas.Model;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,7 +15,7 @@ public class Order {
         validate(input);
         List<String> dashes = Stream.of(input.split(","))
                 .toList();
-
+        Set<String> duplicateMenu = new HashSet<>();
         int totalCount = 0;
         for (String s : dashes) {
             int idx = s.indexOf('-');
@@ -38,6 +40,11 @@ public class Order {
             if (!MenuBoard.compare(menu)) {
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
+            duplicateMenu.add(menu);
+
+        }
+        if (dashes.size() != duplicateMenu.size()) {
+            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
         if (totalCount >= 21) {
             throw new IllegalArgumentException("[ERROR] 메뉴의 총 개수는 최대 20개 입니다.");
