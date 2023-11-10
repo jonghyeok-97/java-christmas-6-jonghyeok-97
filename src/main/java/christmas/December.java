@@ -1,6 +1,8 @@
 package christmas;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum December {
     D_DAY(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)),
@@ -15,11 +17,14 @@ public enum December {
         this.discountDays = discountDays;
     }
 
-    public boolean isContain(int day) {
-        return D_DAY.getDiscountDays().contains(day);
+    public static List<December> checkDiscountType(int day) {
+        return Stream.of(December.values())
+                .filter(type -> type.getDiscountDays().contains(day))
+                .collect(Collectors.toList());
     }
 
-    private List<Integer> getDiscountDays() {
+
+    public List<Integer> getDiscountDays() {
         return discountDays;
     }
 }
