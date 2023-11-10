@@ -12,7 +12,7 @@ public class Order {
     public Order(String input) throws IllegalArgumentException {
         validate(input);
         List<String> dashes = Stream.of(input.split(","))
-                .collect(Collectors.toList());
+                .toList();
 
         int totalCount = 0;
         for (String s : dashes) {
@@ -35,7 +35,9 @@ public class Order {
             }
             totalCount += count;
 
-            //MenuBoard.compare(menu);
+            if (!MenuBoard.compare(menu)) {
+                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            }
         }
         if (totalCount >= 21) {
             throw new IllegalArgumentException("[ERROR] 메뉴의 총 개수는 최대 20개 입니다.");
