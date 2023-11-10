@@ -31,4 +31,12 @@ public class OrderTest {
         Assertions.assertThatThrownBy(() -> new Order(input))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"양송이수프-1,제로콜라-3,양송이수프-5", "제로콜라-3,해산물파스타-3,제로콜라-1"})
+    @DisplayName("메뉴가 중복되면 예외 발생하는 테스트")
+    void not_menu_in_MenuBoard(String menu) {
+        Assertions.assertThatThrownBy(() -> new Order(menu))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
