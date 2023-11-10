@@ -35,7 +35,9 @@ public class Order {
 
             //MenuBoard.compare(menu);
         }
-        
+        if (totalCount >= 21) {
+            throw new IllegalArgumentException("[ERROR] 메뉴의 총 개수는 최대 20개 입니다.");
+        }
     }
 
     private void validate(String input) {
