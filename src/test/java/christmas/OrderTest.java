@@ -25,8 +25,8 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"고기-20,파스타-1"})
-    @DisplayName("메뉴 개수가 21개 이상이면 예외 테스트")
+    @ValueSource(strings = {"고기-20,파스타-1", "고기-3,파스타-0", "고기-20,파스타-0"})
+    @DisplayName("메뉴 개수가 21개 이상이거나 주문메뉴개수가 0개면 예외 테스트")
     void create_Order3(String input) {
         Assertions.assertThatThrownBy(() -> new Order(input))
                 .isInstanceOf(IllegalArgumentException.class);
