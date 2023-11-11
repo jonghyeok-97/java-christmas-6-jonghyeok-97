@@ -17,9 +17,9 @@ public enum MenuBoard {
         this.menu = menu;
     }
 
-    public static boolean compare(String menu) {
+    public static boolean compare(String orderedMenu) {
         return Stream.of(MenuBoard.values())
-                .anyMatch(menus -> menus.menu.keySet().contains(menu));
+                .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
     }
 
     public static Map<String, Integer> find(String orderedMenu) {
@@ -28,5 +28,10 @@ public enum MenuBoard {
                 .findAny()
                 .map(type -> Map.of(orderedMenu, type.menu.get(orderedMenu)))
                 .orElse(NONE.menu);
+    }
+
+    public static boolean findDish(String orderedMenu) {
+        return Stream.of(MenuBoard.APPETIZER, MenuBoard.DESSERT, MenuBoard.MAIN)
+                .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
     }
 }
