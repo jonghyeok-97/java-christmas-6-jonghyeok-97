@@ -13,7 +13,8 @@ public class Order {
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
     // 주문한 메뉴 타입과 개수
     private final Map<MenuBoard, Integer> countByOrderedType = new HashMap<>();
-    private int orderedTotalPrice;
+    // 총 주문 금액
+    private int totalPrice;
 
     public Order(String input) throws IllegalArgumentException {
         validate(input);
@@ -66,12 +67,16 @@ public class Order {
             throw new IllegalArgumentException("[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.");
         }
         for (String menu : countByOrderedMenu.keySet()) {
-            this.orderedTotalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
+            this.totalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
         }
     }
 
     public int getTotalPrice() {
-        return orderedTotalPrice;
+        return totalPrice;
+    }
+
+    public Map<String, Integer> getCountByOrderedMenu() {
+        return countByOrderedMenu;
     }
 
     private void validate(String input) {

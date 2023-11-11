@@ -20,6 +20,7 @@ public class EventPlanner {
         Order order = createOrder();
 
         outputView.printEventResultMessage();
+        outputView.printMenu(order);
 
     }
 
