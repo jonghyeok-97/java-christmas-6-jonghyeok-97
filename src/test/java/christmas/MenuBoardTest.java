@@ -1,9 +1,12 @@
 package christmas;
 
+import christmas.Model.MenuBoard;
 import christmas.Model.Order;
+import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class MenuBoardTest {
@@ -14,5 +17,14 @@ public class MenuBoardTest {
     void not_menu_in_MenuBoard(String menu) {
         Assertions.assertThatThrownBy(() -> new Order(menu))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"양송이수프,6000", "바비큐립,54000", "초코케이크,15000"})
+    @DisplayName("메뉴판에서 메뉴를 찾는 테스트")
+    void find_menu_in_MenuBoard(String menu, int price) {
+        Map<String, Integer> actual = MenuBoard.find(menu);
+
+        Assertions.assertThat(actual.get(menu)).isEqualTo(price);
     }
 }
