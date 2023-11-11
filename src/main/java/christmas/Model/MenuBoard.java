@@ -22,12 +22,11 @@ public enum MenuBoard {
                 .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
     }
 
-    public static Map<String, Integer> find(String orderedMenu) {
+    public static MenuBoard find(String orderedMenu) {
         return Stream.of(MenuBoard.values())
                 .filter(type -> type.menu.keySet().contains(orderedMenu))
                 .findAny()
-                .map(type -> Map.of(orderedMenu, type.menu.get(orderedMenu)))
-                .orElse(NONE.menu);
+                .orElse(NONE);
     }
 
     public static boolean findDish(String orderedMenu) {

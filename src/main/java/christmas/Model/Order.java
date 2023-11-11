@@ -9,7 +9,11 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class Order {
-    private final Map<Map<String, Integer>, Integer> orderedMenu = new HashMap<>();
+    // 주문한 메뉴 이름과 개수
+    private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
+    // 주문한 메뉴 타입과 개수
+    private final Map<MenuBoard, Integer> countByOrderedType = new HashMap<>();
+    private int orderedTotalPrice;
 
     public Order(String input) throws IllegalArgumentException {
         validate(input);
@@ -45,7 +49,11 @@ public class Order {
                 hasDish = true;
             }
             duplicateMenu.add(menu);
-            orderedMenu.put(MenuBoard.find(menu) ,count);
+
+            countByOrderedMenu.put(menu ,count);
+            MenuBoard menuType = MenuBoard.find(menu);
+            countByOrderedType.put(menuType, countByOrderedType.get(menuType));
+
         }
         if (dashes.size() != duplicateMenu.size()) {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
