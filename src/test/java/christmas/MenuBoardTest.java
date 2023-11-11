@@ -20,12 +20,10 @@ public class MenuBoardTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"양송이수프,6000", "바비큐립,54000", "초코케이크,15000"})
-    @DisplayName("메뉴판에서 메뉴를 찾는 테스트")
-    void find_menu_in_MenuBoard(String menu, int price) {
-        Map<String, Integer> actual = MenuBoard.find(menu);
-
-        Assertions.assertThat(actual.get(menu)).isEqualTo(price);
+    @CsvSource(value = {"양송이수프,APPETIZER", "바비큐립,MAIN", "초코케이크,DESSERT", "레드와인,BEVERAGE"})
+    @DisplayName("메뉴판에서 메뉴타입을 찾는 테스트")
+    void find_menuType_in_MenuBoard(String menu, MenuBoard menuBoard) {
+        Assertions.assertThat(MenuBoard.find(menu)).isEqualTo(menuBoard);
     }
 
     @ParameterizedTest
