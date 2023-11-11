@@ -1,6 +1,7 @@
 package christmas.View;
 
 import christmas.Model.Order;
+import java.text.DecimalFormat;
 
 public class OutputView {
 
@@ -9,9 +10,16 @@ public class OutputView {
     }
 
     public void printMenu(Order order) {
+        System.out.println("<주문 메뉴>");
         order.getCountByOrderedMenu().entrySet()
                 .forEach(entry -> {
                     System.out.printf("%s %d개\n", entry.getKey(), entry.getValue());
                 });
+    }
+
+    public void printTotalPrice(Order order) {
+        System.out.println("<할인 전 총주문 금액>");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+        System.out.println(decimalFormat.format(order.getTotalPrice()) + "원");
     }
 }
