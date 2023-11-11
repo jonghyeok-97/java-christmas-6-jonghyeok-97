@@ -1,6 +1,7 @@
 package christmas.Controller;
 
 import christmas.Model.Order;
+import christmas.Model.PresentDiscount;
 import christmas.Model.VisitDate;
 import christmas.View.InputView;
 import christmas.View.OutputView;
@@ -21,7 +22,9 @@ public class EventPlanner {
 
         outputView.printEventResultMessage();
         outputView.printMenu(order);
+        outputView.printTotalPrice(order);
 
+        outputView.printPresent(new PresentDiscount(order));
     }
 
     private VisitDate createVisitDate() {

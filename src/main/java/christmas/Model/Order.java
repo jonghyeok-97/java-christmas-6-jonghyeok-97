@@ -79,6 +79,10 @@ public class Order {
         return countByOrderedMenu;
     }
 
+    public boolean isOverPresentPrice() {
+        return totalPrice >= 120000;
+    }
+
     private void validate(String input) {
         validateSplitedDelemeter(input);
         validateEndsWithDelemeter(input);
