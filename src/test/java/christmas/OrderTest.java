@@ -3,6 +3,7 @@ package christmas;
 import christmas.Model.Order;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -39,4 +40,15 @@ public class OrderTest {
         Assertions.assertThatThrownBy(() -> new Order(menu))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"제로콜라-3,레드와인-1", "샴페인-3"})
+    @DisplayName("음료만 주문하면 예외 발생하는 테스트")
+    void only_Beverage_in_Order(String menu) {
+
+        Assertions.assertThatThrownBy(() -> new Order(menu))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+
 }

@@ -27,4 +27,13 @@ public class MenuBoardTest {
 
         Assertions.assertThat(actual.get(menu)).isEqualTo(price);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"크리스마스파스타", "아이스크림", "타파스"})
+    @DisplayName("음식을 찾으면 true를 반환하는 테스트")
+    void findDish_in_Order(String menu) {
+        boolean actual = MenuBoard.findDish(menu);
+
+        Assertions.assertThat(actual).isEqualTo(true);
+    }
 }
