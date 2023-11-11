@@ -1,15 +1,15 @@
 package christmas.Model;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Order {
-    //private final Map<MenuBoard, Integer> order;
+    private final Map<Map<String, Integer>, Integer> orderedMenu = new HashMap<>();
 
     public Order(String input) throws IllegalArgumentException {
         validate(input);
@@ -41,6 +41,7 @@ public class Order {
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
             duplicateMenu.add(menu);
+            orderedMenu.put(MenuBoard.find(menu) ,count);
 
         }
         if (dashes.size() != duplicateMenu.size()) {

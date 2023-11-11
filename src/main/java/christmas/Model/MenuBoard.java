@@ -8,7 +8,8 @@ public enum MenuBoard {
     MAIN(Map.of("티본스테이크", 55000, "바비큐립", 54000,
             "해산물파스타", 35000, "크리스마스파스타", 25000)),
     DESSERT(Map.of("초코케이크", 15000, "아이스크림", 5000)),
-    BEVERAGE(Map.of("제로콜라", 3000, "레드와인", 60000, "샴페인", 25000));
+    BEVERAGE(Map.of("제로콜라", 3000, "레드와인", 60000, "샴페인", 25000)),
+    NONE(Map.of());
 
     private final Map<String, Integer> menu;
 
@@ -19,5 +20,13 @@ public enum MenuBoard {
     public static boolean compare(String menu) {
         return Stream.of(MenuBoard.values())
                 .anyMatch(menus -> menus.menu.keySet().contains(menu));
+    }
+
+    public static Map<String, Integer> find(String orderedMenu) {
+        return Stream.of(MenuBoard.values())
+                .filter(type -> type.menu.keySet().contains(orderedMenu))
+                .findAny()
+                .map(type -> Map.of(orderedMenu, type.menu.get(orderedMenu)))
+                .orElse(NONE.menu);
     }
 }
