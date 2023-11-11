@@ -51,8 +51,9 @@ public class Order {
             duplicateMenu.add(menu);
 
             countByOrderedMenu.put(menu ,count);
+
             MenuBoard menuType = MenuBoard.find(menu);
-            countByOrderedType.put(menuType, countByOrderedType.get(menuType));
+            countByOrderedType.put(menuType, countByOrderedType.getOrDefault(menuType, 0) + count);
 
         }
         if (dashes.size() != duplicateMenu.size()) {
@@ -64,6 +65,13 @@ public class Order {
         if (!hasDish) {
             throw new IllegalArgumentException("[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.");
         }
+        for (String menu : countByOrderedMenu.keySet()) {
+            this.orderedTotalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
+        }
+    }
+
+    public int getTotalPrice() {
+        return orderedTotalPrice;
     }
 
     private void validate(String input) {

@@ -1,5 +1,6 @@
 package christmas.Model;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -32,5 +33,13 @@ public enum MenuBoard {
     public static boolean findDish(String orderedMenu) {
         return Stream.of(MenuBoard.APPETIZER, MenuBoard.DESSERT, MenuBoard.MAIN)
                 .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
+    }
+
+    public static int getPrice(String orderedMenu) {
+        return Stream.of(MenuBoard.values())
+                .filter(type -> type.menu.keySet().contains(orderedMenu))
+                .map(type -> type.menu.get(orderedMenu))
+                .findAny()
+                .orElse(0);
     }
 }
