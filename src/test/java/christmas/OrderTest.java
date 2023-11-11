@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class OrderTest {
@@ -50,5 +51,11 @@ public class OrderTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @ParameterizedTest
+    @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000"}, delimiter = ':')
+    @DisplayName("주문한 메뉴에 따라 총 주문금액이 잘 합산되는지 테스트")
+    void check_totalPrice(String menus, int totalPrice) {
+        Assertions.assertThat(new Order(menus).getTotalPrice()).isEqualTo(totalPrice);
+    }
 
 }
