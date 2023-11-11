@@ -19,7 +19,7 @@ public class EventPlanner {
         VisitDate visitDate = createVisitDate();
         Order order = createOrder();
 
-
+        outputView.printEventResultMessage();
 
     }
 
