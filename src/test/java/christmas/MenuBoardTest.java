@@ -34,4 +34,11 @@ public class MenuBoardTest {
 
         Assertions.assertThat(actual).isEqualTo(true);
     }
+
+    @ParameterizedTest
+    @CsvSource(value = {"양송이수프,6000", "제로콜라,3000", "크리스마스파스타,25000"})
+    @DisplayName("주문한 메뉴에 맞는 가격을 반환하는지 테스트")
+    void getPrice_by_menu(String menu, int price) {
+        Assertions.assertThat(MenuBoard.getPrice(menu)).isEqualTo(price);
+    }
 }
