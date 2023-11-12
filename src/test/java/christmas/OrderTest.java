@@ -1,6 +1,14 @@
 package christmas;
 
+import christmas.Model.MenuBoard;
 import christmas.Model.Order;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,4 +66,24 @@ public class OrderTest {
         Assertions.assertThat(new Order(menus).getTotalPrice()).isEqualTo(totalPrice);
     }
 
+    @ParameterizedTest
+    @DisplayName("메뉴타입에 따라 메뉴가격이 잘 합산되는지 테스트")
+    @CsvSource(value = {"양송이수프,타파스,시저샐러드:APPETIZER:19500", "티본스테이크,바비큐립,해산물파스타,제로콜라:MAIN:144000",
+            "초코케이크,아이스크림,레드와인,바비큐립:DESSERT:20000"}, delimiter = ':')
+    void check_priceByOrderedType(String orderedMenu, MenuBoard MENUTYPE, int totalPriceByType) {
+        Map<MenuBoard, Integer> priceByOrderedType= new HashMap<>();
+        List<String> menus = Stream.of(orderedMenu.split(","))
+                .collect(Collectors.toList());
+        for (String menu : menus) {
+            MenuBoard menuType = MenuBoard.findType(menu);
+            int menuPrice = MenuBoard.getPrice(menu);
+
+            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice);
+        }
+
+        int actual = priceByOrderedType.get(MENUTYPE);
+        int expected = totalPriceByType;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
