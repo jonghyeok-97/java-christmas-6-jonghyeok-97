@@ -102,6 +102,14 @@ public class Order {
                 .sum();
     }
 
+    public int findPriceOfMain() {
+        return priceByOrderedType.keySet().stream()
+                .filter(menuType -> menuType.equals(MenuBoard.MAIN))
+                .mapToInt(menuType -> priceByOrderedType.get(menuType))
+                .findAny()
+                .orElse(0);
+    }
+
     private void validate(String input) {
         validateSplitedDelemeter(input);
         validateEndsWithDelemeter(input);
