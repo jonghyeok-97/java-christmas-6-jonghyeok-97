@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 public class Order {
     // 주문한 메뉴 이름과 개수
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
-    // 주문한 메뉴 타입과 개수
-    private final Map<MenuBoard, Integer> countByOrderedType = new HashMap<>();
+    // 주문한 메뉴 타입과 가격
+    private final Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
     // 총 주문 금액
     private int totalPrice;
 
@@ -53,8 +53,9 @@ public class Order {
 
             countByOrderedMenu.put(menu ,count);
 
-            MenuBoard menuType = MenuBoard.find(menu);
-            countByOrderedType.put(menuType, countByOrderedType.getOrDefault(menuType, 0) + count);
+            MenuBoard menuType = MenuBoard.findType(menu);
+            int menuPrice = MenuBoard.getPrice(menu);
+            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice);
 
         }
         if (dashes.size() != duplicateMenu.size()) {
