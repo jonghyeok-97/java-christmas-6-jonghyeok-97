@@ -16,7 +16,12 @@ public enum December {
     }
 
     public static boolean checkNormalDate(int visitDate) {
-        return Stream.of(December.values())
+        return Stream.of(December.NORMAL)
                 .anyMatch(week -> week.discountDates.contains(visitDate));
     }
+
+    public static boolean checkWeekdaysDate(int visitDate) {
+        return true;
+    }
+
 }
