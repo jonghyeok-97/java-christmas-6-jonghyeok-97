@@ -56,7 +56,6 @@ public class Order {
             MenuBoard menuType = MenuBoard.findType(menu);
             int menuPrice = MenuBoard.getPrice(menu);
             priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * count);
-
         }
         if (dashes.size() != duplicateMenu.size()) {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
@@ -115,6 +114,11 @@ public class Order {
                 .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.MAIN))
                 .mapToInt(menu -> countByOrderedMenu.get(menu))
                 .sum();
+    }
+
+    public boolean hasChampagneOfMenu() {
+        return countByOrderedMenu.keySet().stream()
+                .anyMatch(menu -> menu.equals("샴페인"));
     }
 
     private void validate(String input) {

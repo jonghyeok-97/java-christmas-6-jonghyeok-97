@@ -1,15 +1,19 @@
 package christmas.Model;
 
 public class PresentDiscount {
-    boolean isPresent;
+    private boolean isPresentDiscount;
+    private int presentDiscountPrice;
+    private boolean hasChampagne;
 
     public PresentDiscount(Order order) {
-        if (order.isOverMinDiscountPrice()) {
-            this.isPresent = order.isOverMinPresentPrice();
+        if (order.isOverMinPresentPrice() && order.isOverMinDiscountPrice()) {
+            this.isPresentDiscount = true;
+            this.presentDiscountPrice = 25000;
+            this.hasChampagne = order.hasChampagneOfMenu();
         }
     }
 
-    public boolean getPresent() {
-        return isPresent;
+    public boolean getPresentDiscount() {
+        return isPresentDiscount;
     }
 }
