@@ -2,14 +2,14 @@ package christmas.Model;
 
 public class PresentDiscount {
     private Order order;
-    boolean present;
+    boolean isPresent;
 
     public PresentDiscount(Order order) {
         this.order = order;
-        this.present = this.order.isOverPresentPrice();
+        this.isPresent = this.order.isOverMinPresentPrice();
     }
 
     public boolean getPresent() {
-        return present;
+        return isPresent;
     }
 }
