@@ -14,6 +14,10 @@ public class VisitDate {
         return December.checkNormalDate(visitDate);
     }
 
+    public boolean isWeekdaysDate() {
+        return December.checkWeekdaysDate(visitDate);
+    }
+
     public int calculateNormalDiscount() {
         return visitDate * 100 + 900;
     }
