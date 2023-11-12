@@ -110,6 +110,13 @@ public class Order {
                 .orElse(0);
     }
 
+    public int countMainMenu() {
+        return countByOrderedMenu.keySet().stream()
+                .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.MAIN))
+                .mapToInt(menu -> countByOrderedMenu.get(menu))
+                .sum();
+    }
+
     private void validate(String input) {
         validateSplitedDelemeter(input);
         validateEndsWithDelemeter(input);

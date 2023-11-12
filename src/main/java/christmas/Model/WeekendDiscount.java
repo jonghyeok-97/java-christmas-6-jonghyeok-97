@@ -9,7 +9,7 @@ public class WeekendDiscount {
         if (visitDate.isWeekendDate() && order.isOverMinDiscountPrice()) {
             this.isWeekendDiscount = true;
             int mainPrice = order.findPriceOfMain();
-            //int countMainMenu = order.countMainMenu();
+            int countMainMenu = order.countMainMenu();
         }
     }
 }
