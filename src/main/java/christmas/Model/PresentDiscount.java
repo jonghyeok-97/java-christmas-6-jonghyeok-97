@@ -5,8 +5,10 @@ public class PresentDiscount {
     boolean isPresent;
 
     public PresentDiscount(Order order) {
-        this.order = order;
-        this.isPresent = this.order.isOverMinPresentPrice();
+        if (order.isOverMinDiscountPrice()) {
+            this.order = order;
+            this.isPresent = this.order.isOverMinPresentPrice();
+        }
     }
 
     public boolean getPresent() {

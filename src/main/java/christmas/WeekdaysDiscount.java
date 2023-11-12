@@ -4,16 +4,17 @@ import christmas.Model.Order;
 import christmas.Model.VisitDate;
 
 public class WeekdaysDiscount {
-    private boolean weekdaysDate = false;
-    private int weekdaysDiscountPrice = 0;
+    private boolean isWeekdaysDiscount;
+    private int weekdaysDiscountPrice;
 
     public WeekdaysDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isWeekdaysDate()) {
-            weekdaysDate = true;
+        if (visitDate.isWeekdaysDate() && order.isOverMinDiscountPrice()) {
+            this.isWeekdaysDiscount = true;
             int dessertPrice = order.findPriceOfDessert();
             int countDessertMenu = order.countDessertMenu();
             this.weekdaysDiscountPrice = dessertPrice - countDessertMenu * 2023;
         }
     }
+
 
 }

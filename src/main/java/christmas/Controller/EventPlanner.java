@@ -3,8 +3,10 @@ package christmas.Controller;
 import christmas.Model.Order;
 import christmas.Model.PresentDiscount;
 import christmas.Model.VisitDate;
+import christmas.NormalDiscount;
 import christmas.View.InputView;
 import christmas.View.OutputView;
+import christmas.WeekdaysDiscount;
 
 public class EventPlanner {
     private InputView inputView;
@@ -25,6 +27,9 @@ public class EventPlanner {
         outputView.printTotalPrice(order);
 
         outputView.printPresent(new PresentDiscount(order));
+
+        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
+        WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
     }
 
     private VisitDate createVisitDate() {
