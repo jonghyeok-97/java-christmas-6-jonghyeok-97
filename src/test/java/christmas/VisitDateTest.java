@@ -33,4 +33,14 @@ public class VisitDateTest {
         Assertions.assertThatThrownBy(() -> new VisitDate(invalidDay))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @DisplayName("1~25일 일때, 크리스마스디데이할인인지 확인하는 테스트")
+    @ValueSource(strings = {"1", "25", "10"})
+    void isNormalDate(String visitNormalDate) {
+        VisitDate visitDate = new VisitDate(visitNormalDate);
+        boolean actual = visitDate.isNormalDate();
+
+        Assertions.assertThat(actual).isEqualTo(true);
+    }
 }
