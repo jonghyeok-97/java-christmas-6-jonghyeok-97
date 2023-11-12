@@ -175,4 +175,17 @@ public class OrderTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("주문한 메뉴중에서 샴페인이 있는지 찾는 테스트")
+    @CsvSource(value = {"바비큐립-2,샴페인-3:true", "초코케이크-1,해산물파스타-1,제로콜라-2,샴페인-1:true",
+            "크리스마스파스타-1,레드와인-2:false"}, delimiter = ':')
+    void has_Champagne_Of_Menu(String menus, boolean hasChampagne) {
+        Order order = new Order(menus);
+
+        boolean actual = order.hasChampagneOfMenu();
+        boolean expected = hasChampagne;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
