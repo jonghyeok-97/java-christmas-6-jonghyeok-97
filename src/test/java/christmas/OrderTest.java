@@ -150,4 +150,17 @@ public class OrderTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("메인 메뉴들의 총 가격을 구하는 테스트")
+    @CsvSource(value = {"해산물파스타-1,바비큐립-2,아이스크림-2,레드와인-2:143000", "바비큐립-1,초코케이크-3,제로콜라-5:54000"},
+            delimiter = ':')
+    void calculate_Weekend_Discount(String menus, int mainPrice) {
+        Order order = new Order(menus);
+
+        int actual = order.findPriceOfMain();
+        int expected = mainPrice;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
