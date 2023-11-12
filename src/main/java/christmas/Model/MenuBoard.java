@@ -1,6 +1,5 @@
 package christmas.Model;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -23,7 +22,7 @@ public enum MenuBoard {
                 .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
     }
 
-    public static MenuBoard find(String orderedMenu) {
+    public static MenuBoard findType(String orderedMenu) {
         return Stream.of(MenuBoard.values())
                 .filter(type -> type.menu.keySet().contains(orderedMenu))
                 .findAny()
