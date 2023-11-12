@@ -39,4 +39,14 @@ public class DecemberTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("특별 날짜만 참인지 확인하는 테스트")
+    @CsvSource(value = {"3,true", "10,true", "25,true", "13,false", "26,false", "30,false"})
+    void check_SPECIAL_Date(int visitDate, boolean isSpecialDate) {
+        boolean actual = December.checkSpecialDate(visitDate);
+        boolean expected = isSpecialDate;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
