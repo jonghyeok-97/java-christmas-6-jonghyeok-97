@@ -91,20 +91,19 @@ public class Order {
                 .findAny()
                 .orElse(0);
     }
-    public int calculateWeekdaysDiscount() {
-        int dessertPrice = priceByOrderedType.keySet().stream()
-                .filter(menuType -> menuType.equals(MenuBoard.DESSERT))
-                .mapToInt(menuType -> priceByOrderedType.get(menuType))
-                .sum();
-        int countMenu = countByOrderedMenu.values().stream()
+
+    public int countOrderedMenu() {
+        return countByOrderedMenu.values().stream()
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+    public int calculateWeekdaysDiscount() {
 
-        int price = dessertPrice - countMenu * 2023;
-        if(price <= 0 ) {
-            return 0;
-        }
-        return price;
+//        int price = dessertPrice - countMenu * 2023;
+//        if(price <= 0 ) {
+//            return 0;
+//        }
+        return 0;
     }
 
     private void validate(String input) {
