@@ -138,4 +138,16 @@ public class OrderTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("총주문금액이 만원을 넘지 않으면 false를 반환하는 테스트")
+    @ValueSource(strings = {"양송이수프-1", "타파스-1,제로콜라-1", "아이스크림-1"})
+    void isOverMinOrderedPriceForDiscount(String menus) {
+        Order order = new Order(menus);
+
+        boolean actual = order.isOverMinDiscountPrice();
+        boolean expected = false;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
