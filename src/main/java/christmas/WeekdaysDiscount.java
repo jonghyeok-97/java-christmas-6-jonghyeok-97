@@ -11,7 +11,9 @@ public class WeekdaysDiscount {
         if (visitDate.isWeekdaysDate()) {
             weekdaysDate = true;
             int dessertPrice = order.findPriceOfDessert();
-            int countTotalMenu = order.countOrderedMenu();
+            int countDessertMenu = order.countDessertMenu();
+            this.weekdaysDiscountPrice = dessertPrice - countDessertMenu * 2023;
         }
     }
+
 }
