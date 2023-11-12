@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class VisitDateTest {
@@ -34,6 +35,7 @@ public class VisitDateTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+
     @ParameterizedTest
     @DisplayName("1~25일 일때, 크리스마스디데이할인인지 확인하는 테스트")
     @ValueSource(strings = {"1", "25", "10"})
@@ -42,5 +44,15 @@ public class VisitDateTest {
         boolean actual = visitDate.isNormalDate();
 
         Assertions.assertThat(actual).isEqualTo(true);
+    }
+
+    @ParameterizedTest
+    @DisplayName("1일-1000원,2일-1100원...25일-3400원처럼 1일당 100원씩 증가하는지 테스트")
+    @CsvSource(value = {"1,1000", "2,1100", "24,3300", "25,3400"})
+    void calculate_Normal_Discount(String visitNormalDate, int discount) {
+        VisitDate visitDate = new VisitDate(visitNormalDate);
+        int actual = visitDate.calculateNormalDiscount();
+
+        Assertions.assertThat(actual).isEqualTo(discount);
     }
 }
