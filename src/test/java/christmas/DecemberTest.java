@@ -29,4 +29,14 @@ public class DecemberTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("주말 날짜만 참인지 확인하는 테스트")
+    @CsvSource(value = {"1,true", "9,true", "17,false", "23,true", "31,false"})
+    void check_weekendDate(int visitDate, boolean isWeekendDate) {
+        boolean actual = December.checkWeekendDate(visitDate);
+        boolean expected = isWeekendDate;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
