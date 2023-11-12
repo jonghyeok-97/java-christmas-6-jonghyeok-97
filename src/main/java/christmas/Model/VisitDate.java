@@ -1,11 +1,17 @@
 package christmas.Model;
 
+import christmas.December;
+
 public class VisitDate {
     private final int visitDate;
 
     public VisitDate(String inputDate) {
         validate(inputDate);
         this.visitDate = Integer.parseInt(inputDate);
+    }
+
+    public boolean isNormalDate() {
+        return December.checkNormalDate(visitDate);
     }
 
     private void validate(String inputDate) throws IllegalArgumentException {
