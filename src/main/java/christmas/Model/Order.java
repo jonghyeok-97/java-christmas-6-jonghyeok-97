@@ -92,18 +92,11 @@ public class Order {
                 .orElse(0);
     }
 
-    public int countOrderedMenu() {
-        return countByOrderedMenu.values().stream()
-                .mapToInt(Integer::intValue)
+    public int countDessertMenu() {
+        return countByOrderedMenu.keySet().stream()
+                .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.DESSERT))
+                .mapToInt(menu -> countByOrderedMenu.get(menu))
                 .sum();
-    }
-    public int calculateWeekdaysDiscount() {
-
-//        int price = dessertPrice - countMenu * 2023;
-//        if(price <= 0 ) {
-//            return 0;
-//        }
-        return 0;
     }
 
     private void validate(String input) {
