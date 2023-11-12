@@ -10,6 +10,7 @@ public class WeekendDiscount {
             this.isWeekendDiscount = true;
             int mainPrice = order.findPriceOfMain();
             int countMainMenu = order.countMainMenu();
+            this.weekendDiscountPrice = mainPrice - countMainMenu * 2023;
         }
     }
 }
