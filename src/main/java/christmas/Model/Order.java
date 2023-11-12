@@ -80,7 +80,10 @@ public class Order {
         return countByOrderedMenu;
     }
 
-    public boolean isOverPresentPrice() {
+    public boolean isOverMinDiscountPrice() {
+        return totalPrice >= 10000;
+    }
+    public boolean isOverMinPresentPrice() {
         return totalPrice >= 120000;
     }
 
