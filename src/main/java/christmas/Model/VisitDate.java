@@ -14,6 +14,10 @@ public class VisitDate {
         return December.checkNormalDate(visitDate);
     }
 
+    public int calculateNormalDiscount() {
+        return visitDate * 100 + 900;
+    }
+
     private void validate(String inputDate) throws IllegalArgumentException {
         validateNumber(inputDate);
         validateVisitDateRange(inputDate);

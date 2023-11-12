@@ -8,6 +8,6 @@ public class NormalDiscount {
     public NormalDiscount(VisitDate visitDate) {
         if (visitDate.isNormalDate()) {
             this.normalDate = true;
-        }
+            this.normalDiscountPrice = visitDate.calculateNormalDiscount();       }
     }
 }
