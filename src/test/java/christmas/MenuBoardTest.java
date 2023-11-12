@@ -2,7 +2,6 @@ package christmas;
 
 import christmas.Model.MenuBoard;
 import christmas.Model.Order;
-import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,7 +22,7 @@ public class MenuBoardTest {
     @CsvSource(value = {"양송이수프,APPETIZER", "바비큐립,MAIN", "초코케이크,DESSERT", "레드와인,BEVERAGE"})
     @DisplayName("메뉴판에서 메뉴타입을 찾는 테스트")
     void find_menuType_in_MenuBoard(String menu, MenuBoard menuBoard) {
-        Assertions.assertThat(MenuBoard.find(menu)).isEqualTo(menuBoard);
+        Assertions.assertThat(MenuBoard.findType(menu)).isEqualTo(menuBoard);
     }
 
     @ParameterizedTest
