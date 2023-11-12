@@ -55,4 +55,16 @@ public class VisitDateTest {
 
         Assertions.assertThat(actual).isEqualTo(discount);
     }
+
+    @ParameterizedTest
+    @DisplayName("평일이면 참을 반환하는 테스트")
+    @CsvSource(value = {"3,true", "10,true", "15,false", "30,false"})
+    void isWeekdaysDate(String visitWeekdaysDate, boolean isWeekdaysDate) {
+        VisitDate visitDate = new VisitDate(visitWeekdaysDate);
+
+        boolean actual = visitDate.isWeekdaysDate();
+        boolean expected = isWeekdaysDate;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
