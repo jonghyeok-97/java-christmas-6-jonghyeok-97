@@ -31,4 +31,9 @@ public enum December {
                 .anyMatch(week -> week.discountDates.contains(visitDate));
     }
 
+    public static boolean checkSpecialDate(int visitDate) {
+        return Stream.of(December.SPECIAL)
+                .anyMatch(week -> week.discountDates.contains(visitDate));
+    }
+
 }

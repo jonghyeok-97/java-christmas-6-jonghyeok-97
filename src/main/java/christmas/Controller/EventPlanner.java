@@ -5,6 +5,7 @@ import christmas.Model.PresentDiscount;
 import christmas.Model.VisitDate;
 import christmas.Model.WeekendDiscount;
 import christmas.Model.NormalDiscount;
+import christmas.SpecialDiscount;
 import christmas.View.InputView;
 import christmas.View.OutputView;
 import christmas.Model.WeekdaysDiscount;
@@ -32,6 +33,7 @@ public class EventPlanner {
         NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
         WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
+        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
     }
 
     private VisitDate createVisitDate() {
