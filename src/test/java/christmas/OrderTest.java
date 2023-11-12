@@ -128,13 +128,13 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @DisplayName("주문한 메뉴의 총 개수를 구하는 테스트")
-    @CsvSource(value = {"타파스-3,제로콜라-10,바비큐립-5:18", "초코케이크-10,제로콜라-1,샴페인-3:14"}, delimiter = ':')
-    void countOrderedMenu(String menus, int countTotalMenu) {
+    @DisplayName("주문한 메뉴 중 디저트메뉴의 개수를 구하는 테스트")
+    @CsvSource(value = {"타파스-3,초코케이크-10,바비큐립-5:10", "아이스크림-3,제로콜라-1,샴페인-3:3"}, delimiter = ':')
+    void countOrderedMenu(String menus, int countingDessertMenu) {
         Order order = new Order(menus);
 
-        int actual = order.countOrderedMenu();
-        int expected = countTotalMenu;
+        int actual = order.countDessertMenu();
+        int expected = countingDessertMenu;
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
