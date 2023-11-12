@@ -88,6 +88,7 @@ public class OrderTest {
         Assertions.assertThat(actualMenus).isEqualTo(expectedMenus);
         Assertions.assertThat(actualCounts).isEqualTo(expectedCounts);
     }
+
     @ParameterizedTest
     @DisplayName("메뉴타입에 따라 메뉴가격이 잘 합산되는지 테스트")
     @CsvSource(value = {"양송이수프-1,타파스-2,시저샐러드-1:APPETIZER:25000", "티본스테이크-1,해산물파스타-1,제로콜라-3:MAIN:90000",
@@ -122,6 +123,18 @@ public class OrderTest {
 
         int actual = order.findPriceOfDessert();
         int expected = dessertPrice;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @DisplayName("주문한 메뉴의 총 개수를 구하는 테스트")
+    @CsvSource(value = {"타파스-3,제로콜라-10,바비큐립-5:18", "초코케이크-10,제로콜라-1,샴페인-3:14"}, delimiter = ':')
+    void countOrderedMenu(String menus, int countTotalMenu) {
+        Order order = new Order(menus);
+
+        int actual = order.countOrderedMenu();
+        int expected = countTotalMenu;
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
