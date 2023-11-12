@@ -90,17 +90,21 @@ public class OrderTest {
     }
     @ParameterizedTest
     @DisplayName("메뉴타입에 따라 메뉴가격이 잘 합산되는지 테스트")
-    @CsvSource(value = {"양송이수프,타파스,시저샐러드:APPETIZER:19500", "티본스테이크,바비큐립,해산물파스타,제로콜라:MAIN:144000",
-            "초코케이크,아이스크림,레드와인,바비큐립:DESSERT:20000"}, delimiter = ':')
-    void check_priceByOrderedType(String orderedMenu, MenuBoard MENUTYPE, int totalPriceByType) {
+    @CsvSource(value = {"양송이수프-1,타파스-2,시저샐러드-1:APPETIZER:25000", "티본스테이크-1,해산물파스타-1,제로콜라-3:MAIN:90000",
+            "초코케이크-2,아이스크림-1,레드와인-2,바비큐립-1:DESSERT:35000"}, delimiter = ':')
+    void check_priceByOrderedType(String inputMenu, MenuBoard MENUTYPE, int totalPriceByType) {
         Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
-        List<String> menus = Stream.of(orderedMenu.split(","))
+        List<String> orderedMenus = Stream.of(inputMenu.split(","))
                 .collect(Collectors.toList());
-        for (String menu : menus) {
+        for (String orderedMenu : orderedMenus) {
+            int dashIndex = orderedMenu.indexOf("-");
+            String menu = orderedMenu.substring(0, dashIndex);
+            int countMenu = Integer.parseInt(orderedMenu.substring(dashIndex + 1));
+
             MenuBoard menuType = MenuBoard.findType(menu);
             int menuPrice = MenuBoard.getPrice(menu);
 
-            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice);
+            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * countMenu);
         }
 
         int actual = priceByOrderedType.get(MENUTYPE);
@@ -110,14 +114,14 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @DisplayName("디저트 메뉴들의 총 가격 - 메뉴 1개당 * 2023을 계산하는 테스트")
-    @CsvSource(value = {"해산물파스타-1,바비큐립-2,아이스크림-2,레드와인-2:0", "타파스-1,초코케이크-3,제로콜라-5:26793"},
+    @DisplayName("디저트 메뉴들의 총 가격을 구하는 테스트")
+    @CsvSource(value = {"해산물파스타-1,바비큐립-2,아이스크림-2,레드와인-2:10000", "타파스-1,초코케이크-3,제로콜라-5:45000"},
             delimiter = ':')
-    void calculate_WeekDays_Discount(String menus, int discountPrice) {
+    void calculate_WeekDays_Discount(String menus, int dessertPrice) {
         Order order = new Order(menus);
 
-        int actual = order.calculateWeekdaysDiscount();
-        int expected = discountPrice;
+        int actual = order.findPriceOfDessert();
+        int expected = dessertPrice;
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
