@@ -55,7 +55,7 @@ public class Order {
 
             MenuBoard menuType = MenuBoard.findType(menu);
             int menuPrice = MenuBoard.getPrice(menu);
-            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice);
+            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * count);
 
         }
         if (dashes.size() != duplicateMenu.size()) {
@@ -82,6 +82,29 @@ public class Order {
 
     public boolean isOverPresentPrice() {
         return totalPrice >= 120000;
+    }
+
+    public int findPriceOfDessert() {
+        return priceByOrderedType.keySet().stream()
+                .filter(menuType -> menuType.equals(MenuBoard.DESSERT))
+                .mapToInt(menuType -> priceByOrderedType.get(menuType))
+                .findAny()
+                .orElse(0);
+    }
+    public int calculateWeekdaysDiscount() {
+        int dessertPrice = priceByOrderedType.keySet().stream()
+                .filter(menuType -> menuType.equals(MenuBoard.DESSERT))
+                .mapToInt(menuType -> priceByOrderedType.get(menuType))
+                .sum();
+        int countMenu = countByOrderedMenu.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        int price = dessertPrice - countMenu * 2023;
+        if(price <= 0 ) {
+            return 0;
+        }
+        return price;
     }
 
     private void validate(String input) {
