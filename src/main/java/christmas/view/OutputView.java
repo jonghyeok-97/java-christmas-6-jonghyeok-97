@@ -54,4 +54,12 @@ public class OutputView {
             System.out.printf("증정 이벤트: -%s원", decimalFormat.format(presentDiscount.getPresentDiscountPrice()));
         }
     }
+
+    public void printTotalDiscounts(Payment payment, PresentDiscount presentDiscount) {
+        System.out.println("<총혜택 금액>");
+        int totalDiscounts = payment.getTotalDiscountPriceByDate() + presentDiscount.getPresentDiscountPrice();
+
+        System.out.println(totalDiscounts);
+    }
+
 }
