@@ -58,12 +58,22 @@ public class OutputView {
     public void printTotalDiscounts(Payment payment, PresentDiscount presentDiscount) {
         System.out.println("<총혜택 금액>");
         int totalDiscounts = payment.getTotalDiscountPriceByDate() + presentDiscount.getPresentDiscountPrice();
+
         if (totalDiscounts == 0) {
-            System.out.println("0원");
+            System.out.println("0원\n");
             return;
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
-        System.out.printf("-%s원", decimalFormat.format(totalDiscounts));
+        System.out.printf("-%s원\n", decimalFormat.format(totalDiscounts));
     }
 
+    public void printExpectedPriceByOrder(Order order, Payment payment, PresentDiscount presentDiscount) {
+        System.out.println("<할인 후 예상 결제 금액>");
+        int totalPrice = order.getTotalPrice();
+        int discountTotalPriceByDate = payment.getTotalDiscountPriceByDate();
+        int diffPrice = totalPrice - discountTotalPriceByDate;
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+        System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
+    }
 }

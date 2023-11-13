@@ -27,19 +27,24 @@ public class EventPlanner {
 
         outputView.printEventResultMessage();
         outputView.printMenu(order);
-        outputView.printTotalPrice(order);
+
 
         PresentDiscount presentDiscount = new PresentDiscount(order);
-        outputView.printPresent(presentDiscount);
 
-        NormalDiscount normalDiscount = new NormalDiscount(visitDate);
+        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
         WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
-        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate);
+        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
         Payment payment = new Payment(order, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
 
+        outputView.printTotalPrice(order);
+        outputView.printPresent(presentDiscount);
+        // 혜택 내역
         outputView.printDiscounts(payment, presentDiscount);
+        //총혜택금액
         outputView.printTotalDiscounts(payment, presentDiscount);
+        // 할인후예상결제금액
+        outputView.printExpectedPriceByOrder(order, payment, presentDiscount);
     }
     private VisitDate createVisitDate () {
         try {
