@@ -38,8 +38,7 @@ public class EventPlanner {
         SpecialDiscount specialDiscount = new SpecialDiscount(visitDate);
         Payment payment = new Payment(order, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
 
-        outputView.printDiscounts(payment);
-        //outputView.printDiscountHistory(normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount, presentDiscount);
+        outputView.printDiscounts(payment, presentDiscount);
     }
     private VisitDate createVisitDate () {
         try {
