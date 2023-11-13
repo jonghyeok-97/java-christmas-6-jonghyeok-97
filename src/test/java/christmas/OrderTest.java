@@ -1,10 +1,7 @@
 package christmas;
 
-import christmas.Model.MenuBoard;
-import christmas.Model.Order;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import christmas.model.MenuBoard;
+import christmas.model.Order;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -62,7 +58,7 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000"}, delimiter = ':')
+    @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000", "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1:142000"}, delimiter = ':')
     @DisplayName("주문한 메뉴에 따라 총 주문금액이 잘 합산되는지 테스트")
     void check_totalPrice(String menus, int totalPrice) {
         Assertions.assertThat(new Order(menus).getTotalPrice()).isEqualTo(totalPrice);
@@ -115,19 +111,6 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @DisplayName("디저트 메뉴들의 총 가격을 구하는 테스트")
-    @CsvSource(value = {"해산물파스타-1,바비큐립-2,아이스크림-2,레드와인-2:10000", "타파스-1,초코케이크-3,제로콜라-5:45000"},
-            delimiter = ':')
-    void calculate_WeekDays_Discount(String menus, int dessertPrice) {
-        Order order = new Order(menus);
-
-        int actual = order.findPriceOfDessert();
-        int expected = dessertPrice;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
-    }
-
-    @ParameterizedTest
     @DisplayName("주문한 메뉴 중 디저트메뉴의 개수를 구하는 테스트")
     @CsvSource(value = {"타파스-3,초코케이크-10,바비큐립-5:10", "아이스크림-3,제로콜라-1,샴페인-3:3"}, delimiter = ':')
     void count_Dessert_Menu(String menus, int countingDessertMenu) {
@@ -152,19 +135,6 @@ public class OrderTest {
     }
 
     @ParameterizedTest
-    @DisplayName("메인 메뉴들의 총 가격을 구하는 테스트")
-    @CsvSource(value = {"해산물파스타-1,바비큐립-2,아이스크림-2,레드와인-2:143000", "바비큐립-1,초코케이크-3,제로콜라-5:54000"},
-            delimiter = ':')
-    void calculate_Weekend_Discount(String menus, int mainPrice) {
-        Order order = new Order(menus);
-
-        int actual = order.findPriceOfMain();
-        int expected = mainPrice;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
-    }
-
-    @ParameterizedTest
     @DisplayName("주문한 메뉴 중 메인메뉴의 개수를 구하는 테스트")
     @CsvSource(value = {"타파스-3,초코케이크-10,바비큐립-5:5", "아이스크림-3,해산물파스타-1,샴페인-3:1"}, delimiter = ':')
     void count_MAIN_Menu(String menus, int countingMainMenu) {
@@ -172,19 +142,6 @@ public class OrderTest {
 
         int actual = order.countMainMenu();
         int expected = countingMainMenu;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @DisplayName("주문한 메뉴중에서 샴페인이 있는지 찾는 테스트")
-    @CsvSource(value = {"바비큐립-2,샴페인-3:true", "초코케이크-1,해산물파스타-1,제로콜라-2,샴페인-1:true",
-            "크리스마스파스타-1,레드와인-2:false"}, delimiter = ':')
-    void has_Champagne_Of_Menu(String menus, boolean hasChampagne) {
-        Order order = new Order(menus);
-
-        boolean actual = order.hasChampagneOfMenu();
-        boolean expected = hasChampagne;
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
