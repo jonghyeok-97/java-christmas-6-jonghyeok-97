@@ -1,10 +1,11 @@
-package christmas.Model;
+package christmas.model.dateDiscount;
 
 import christmas.December;
-import christmas.Model.Order;
-import christmas.Model.VisitDate;
+import christmas.model.Order;
+import christmas.model.VisitDate;
+import christmas.model.dateDiscount.DateDiscount;
 
-public class WeekdaysDiscount extends DateDiscount{
+public class WeekdaysDiscount extends DateDiscount {
 //    private boolean isWeekdaysDiscount;
 //    private int weekdaysDiscountPrice;
 //
@@ -25,7 +26,13 @@ public class WeekdaysDiscount extends DateDiscount{
         }
     }
 
+    public String getMessage() {
+        return December.Message(December.WEEKDAY);
+    }
 
+    public int getPrice() {
+        return this.weekdaysDiscountPrice;
+    }
 
 
 }

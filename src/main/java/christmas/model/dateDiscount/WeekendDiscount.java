@@ -1,16 +1,26 @@
-package christmas.Model;
+package christmas.model.dateDiscount;
 
-import org.mockito.internal.matchers.Or;
+import christmas.December;
+import christmas.model.Order;
+import christmas.model.VisitDate;
 
-public class WeekendDiscount {
-    private boolean isWeekendDiscount;
+public class WeekendDiscount extends DateDiscount{
+
     private int weekendDiscountPrice;
     public WeekendDiscount(VisitDate visitDate, Order order) {
         if (visitDate.isWeekendDate() && order.isOverMinDiscountPrice()) {
-            this.isWeekendDiscount = true;
             int mainPrice = order.findPriceOfMain();
             int countMainMenu = order.countMainMenu();
             this.weekendDiscountPrice = mainPrice - countMainMenu * 2023;
         }
     }
+
+    public String getMessage() {
+        return December.Message(December.WEEKEND);
+    }
+
+    public int getPrice() {
+        return this.weekendDiscountPrice;
+    }
+
 }
