@@ -36,4 +36,6 @@ public class Payment {
     public int getTotalDiscountPriceByDate() {
         return totalDiscountPriceByDate;
     }
+
+
 }
