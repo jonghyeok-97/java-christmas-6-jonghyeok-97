@@ -49,4 +49,14 @@ public class DecemberTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @DisplayName("할인 타입에 따른 메시지가 반환되는지 테스트")
+    @CsvSource(value = {"NORMAL,크리스마스 디데이 할인:", "WEEKDAY,평일 할인:", "WEEKEND,주말 할인:", "SPECIAL,특별 할인:"})
+    void message_by_discount_type(December december, String message) {
+        String actual = December.Message(december);
+        String expected = message;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }
