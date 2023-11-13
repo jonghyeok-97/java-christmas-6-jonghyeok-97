@@ -59,7 +59,7 @@ public class OutputView {
 
     public void printTotalDiscounts(Payment payment, PresentDiscount presentDiscount) {
         System.out.println("<총혜택 금액>");
-        int totalDiscounts = payment.getTotalDiscountPriceByDate() + presentDiscount.getPresentDiscountPrice();
+        int totalDiscounts = payment.getTotalDiscountBenefit();
 
         if (totalDiscounts == 0) {
             System.out.println("0원\n");
@@ -79,5 +79,22 @@ public class OutputView {
         countParticipateCustomer++;
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
         System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
+    }
+
+    public void printBadge(Payment payment, PresentDiscount presentDiscount) {
+        int totalDiscounts = payment.getTotalDiscountBenefit();
+        System.out.println("<12월 이벤트 배지>");
+        if (totalDiscounts < 5000) {
+            System.out.println("없음");
+        }
+        if (5000 <= totalDiscounts && totalDiscounts < 10000) {
+            System.out.println("별");
+        }
+        if (10000 <= totalDiscounts && totalDiscounts < 20000) {
+            System.out.println("트리");
+        }
+        if (20000 <= totalDiscounts) {
+            System.out.println("산타");
+        }
     }
 }
