@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.Map;
 
 public class OutputView {
-    private Long expectedPriceOfDecember;
+    private long expectedPriceOfDecember;
     private int countParticipateCustomer;
 
     public void printEventResultMessage() {
