@@ -58,7 +58,10 @@ public class OutputView {
     public void printTotalDiscounts(Payment payment, PresentDiscount presentDiscount) {
         System.out.println("<총혜택 금액>");
         int totalDiscounts = payment.getTotalDiscountPriceByDate() + presentDiscount.getPresentDiscountPrice();
-
+        if (totalDiscounts == 0) {
+            System.out.println("0원");
+            return;
+        }
         System.out.println(totalDiscounts);
     }
 
