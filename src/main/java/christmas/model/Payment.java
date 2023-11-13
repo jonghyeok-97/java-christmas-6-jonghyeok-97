@@ -10,11 +10,19 @@ import java.util.stream.Collectors;
 public class Payment {
 
     private List<DateDiscount> dateDiscounts = new ArrayList<>();
+    private final int totalDiscountPriceByDate;
 
     public Payment(Order order, DateDiscount... dateDiscounts) {
         if (order.isOverMinDiscountPrice()) {
             this.dateDiscounts = Arrays.asList(dateDiscounts);
         }
+        this.totalDiscountPriceByDate = sumDiscountPriceByDate();
+    }
+
+    private int sumDiscountPriceByDate() {
+        return dateDiscounts.stream()
+                .mapToInt(DateDiscount::getPrice)
+                .sum();
     }
 
     public Map<String, Integer> tooString() {
@@ -23,5 +31,9 @@ public class Payment {
                         DateDiscount::getMessage,
                         DateDiscount::getPrice
                 ));
+    }
+
+    public int getTotalDiscountPriceByDate() {
+        return totalDiscountPriceByDate;
     }
 }
