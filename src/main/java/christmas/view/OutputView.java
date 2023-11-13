@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class OutputView {
     private Long expectedPriceOfDecember;
+    private int countParticipateCustomer;
 
     public void printEventResultMessage() {
         System.out.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
@@ -75,7 +76,7 @@ public class OutputView {
         int diffPrice = totalPrice - discountTotalPriceByDate;
 
         expectedPriceOfDecember += diffPrice;
-
+        countParticipateCustomer++;
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
         System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
     }
