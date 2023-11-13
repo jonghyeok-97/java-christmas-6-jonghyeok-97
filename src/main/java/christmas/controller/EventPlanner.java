@@ -35,7 +35,7 @@ public class EventPlanner {
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
         WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
         SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
-        Payment payment = new Payment(order, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
+        Payment payment = new Payment(order, presentDiscount, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
 
         outputView.printTotalPrice(order);
         outputView.printPresent(presentDiscount);
@@ -45,6 +45,8 @@ public class EventPlanner {
         outputView.printTotalDiscounts(payment, presentDiscount);
         // 할인후예상결제금액
         outputView.printExpectedPriceByOrder(order, payment, presentDiscount);
+        // 배지
+        outputView.printBadge(payment, presentDiscount);
     }
     private VisitDate createVisitDate () {
         try {
