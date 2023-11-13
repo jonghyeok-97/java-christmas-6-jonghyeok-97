@@ -1,5 +1,4 @@
-package christmas.Model;
-
+package christmas.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -86,14 +85,6 @@ public class Order {
         return totalPrice >= 120000;
     }
 
-    public int findPriceOfDessert() {
-        return priceByOrderedType.keySet().stream()
-                .filter(menuType -> menuType.equals(MenuBoard.DESSERT))
-                .mapToInt(menuType -> priceByOrderedType.get(menuType))
-                .findAny()
-                .orElse(0);
-    }
-
     public int countDessertMenu() {
         return countByOrderedMenu.keySet().stream()
                 .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.DESSERT))
@@ -101,24 +92,11 @@ public class Order {
                 .sum();
     }
 
-    public int findPriceOfMain() {
-        return priceByOrderedType.keySet().stream()
-                .filter(menuType -> menuType.equals(MenuBoard.MAIN))
-                .mapToInt(menuType -> priceByOrderedType.get(menuType))
-                .findAny()
-                .orElse(0);
-    }
-
     public int countMainMenu() {
         return countByOrderedMenu.keySet().stream()
                 .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.MAIN))
                 .mapToInt(menu -> countByOrderedMenu.get(menu))
                 .sum();
-    }
-
-    public boolean hasChampagneOfMenu() {
-        return countByOrderedMenu.keySet().stream()
-                .anyMatch(menu -> menu.equals("샴페인"));
     }
 
     private void validate(String input) {
