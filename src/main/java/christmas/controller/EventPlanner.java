@@ -21,11 +21,11 @@ public class EventPlanner {
     }
 
     public void start() {
-        outputView.printHelloMessage();
+        outputView.printWelcomeMessage();
         VisitDate visitDate = createVisitDate();
         Order order = createOrder();
 
-        outputView.printEventResultMessage();
+        outputView.printPreviewMessage(visitDate);
         outputView.printMenu(order);
 
 

@@ -3,24 +3,28 @@ package christmas.view;
 import christmas.model.Order;
 import christmas.model.Payment;
 import christmas.model.PresentDiscount;
+import christmas.model.VisitDate;
 import java.text.DecimalFormat;
 import java.util.Map;
 
 public class OutputView {
-    private static final String HELLO = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+    private static final String WELCOME = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+    private static final String PREVIEW_BENEFITS = "12월 %d일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n";
 
     private long expectedPriceOfDecember;
     private int countParticipateCustomer;
 
-    public void printHelloMessage() {
-        System.out.println(HELLO);
+    public void printWelcomeMessage() {
+        System.out.println(WELCOME);
     }
 
     public void printError(String errorMessage) {
         System.out.println(errorMessage);
     }
-    public void printEventResultMessage() {
-        System.out.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
+
+    public void printPreviewMessage(VisitDate visitDate) {
+        System.out.printf(PREVIEW_BENEFITS, visitDate.getDate());
+        newLine();
     }
 
     public void printMenu(Order order) {
@@ -105,5 +109,9 @@ public class OutputView {
         if (20000 <= totalDiscounts) {
             System.out.println("산타");
         }
+    }
+
+    public void newLine() {
+        System.out.println();
     }
 }
