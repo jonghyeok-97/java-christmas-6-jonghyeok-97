@@ -51,7 +51,7 @@ public class OutputView {
                 });
 
         if (presentDiscount.getPresentDiscount()) {
-            System.out.printf("증정 이벤트: -%s원", decimalFormat.format(presentDiscount.getPresentDiscountPrice()));
+            System.out.printf("증정 이벤트: -%s원\n", decimalFormat.format(presentDiscount.getPresentDiscountPrice()));
         }
     }
 
@@ -62,7 +62,8 @@ public class OutputView {
             System.out.println("0원");
             return;
         }
-        System.out.println(totalDiscounts);
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+        System.out.printf("-%s원", decimalFormat.format(totalDiscounts));
     }
 
 }
