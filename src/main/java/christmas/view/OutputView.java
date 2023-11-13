@@ -42,16 +42,16 @@ public class OutputView {
             System.out.println("없음");
             return;
         }
-
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
         payment.tooString().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() != 0)
                 .forEach(entry -> {
-                    System.out.printf("%s -%d원\n", entry.getKey(), entry.getValue());
+                    System.out.printf("%s -%s원\n", entry.getKey(), decimalFormat.format(entry.getValue()));
                 });
 
         if (presentDiscount.getPresentDiscount()) {
-            System.out.printf("증정 이벤트: -%d원", presentDiscount.getPresentDiscountPrice());
+            System.out.printf("증정 이벤트: -%s원", decimalFormat.format(presentDiscount.getPresentDiscountPrice()));
         }
     }
 }
