@@ -1,23 +1,15 @@
 package christmas.model.dateDiscount;
 
 import christmas.December;
+import christmas.model.Order;
 import christmas.model.VisitDate;
-import christmas.model.dateDiscount.DateDiscount;
+import org.mockito.internal.matchers.Or;
 
 public class NormalDiscount extends DateDiscount {
-//    private boolean normalDate;
-//    private int normalDiscountPrice;
-//    private Map<December, Integer> priceByDiscountType = new HashMap<>();
-//
-//    public NormalDiscount(VisitDate visitDate, Order order) {
-//        if (visitDate.isNormalDate() && order.isOverMinDiscountPrice()) {
-//           this.priceByDiscountType.put(December.NORMAL, visitDate.calculateNormalDiscount());
-//        }
-//    }
     private int normalPrice;
 
-    public NormalDiscount(VisitDate visitDate) {
-        if (visitDate.isNormalDate()) {
+    public NormalDiscount(VisitDate visitDate, Order order) {
+        if (visitDate.isNormalDate() && order.isOverMinDiscountPrice()){
             this.normalPrice = visitDate.calculateNormalDiscount();
         }
     }

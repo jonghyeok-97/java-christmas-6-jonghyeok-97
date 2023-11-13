@@ -8,7 +8,7 @@ public class WeekendDiscount extends DateDiscount{
     private int weekendDiscountPrice;
 
     public WeekendDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isWeekendDate()) {
+        if (visitDate.isWeekendDate() && order.isOverMinDiscountPrice()) {
             int mainPrice = order.findPriceOfMain();
             int countMainMenu = order.countMainMenu();
             this.weekendDiscountPrice = countMainMenu * 2023;
