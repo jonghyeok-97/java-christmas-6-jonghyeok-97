@@ -32,15 +32,11 @@ public class EventPlanner {
         PresentDiscount presentDiscount = new PresentDiscount(order);
         outputView.printPresent(presentDiscount);
 
-//        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
-//        WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
-//        WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
-//        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
         NormalDiscount normalDiscount = new NormalDiscount(visitDate);
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
         WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
         SpecialDiscount specialDiscount = new SpecialDiscount(visitDate);
-        Payment payment = new Payment(order, normalDiscount, weekdaysDiscount);
+        Payment payment = new Payment(order, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
 
         outputView.printDiscounts(payment);
         //outputView.printDiscountHistory(normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount, presentDiscount);
