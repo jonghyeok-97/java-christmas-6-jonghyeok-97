@@ -32,10 +32,6 @@ public class VisitDate {
         return December.checkSpecialDate(date);
     }
 
-    public int calculateNormalDiscount() {
-        return date * 100 + 900;
-    }
-
     private void validate(String inputDate) throws IllegalArgumentException {
         validateNumber(inputDate);
         validateDateRange(inputDate);
