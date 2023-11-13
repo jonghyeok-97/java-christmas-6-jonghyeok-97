@@ -1,7 +1,7 @@
 package christmas.view;
 
 import christmas.model.Order;
-import christmas.model.Payment;
+import christmas.model.Benefits;
 import christmas.model.GiftEvent;
 import christmas.model.VisitDate;
 import java.text.DecimalFormat;
@@ -56,14 +56,14 @@ public class OutputView {
         System.out.println(ONE_GIFT);
     }
 
-    public void printDiscounts(Payment payment, GiftEvent gift) {
+    public void printDiscounts(Benefits benefit, GiftEvent gift) {
         System.out.println(BENEFITS_HISTORY);
-        Map<String, Integer> discountHistory = payment.tooString();
-        if (discountHistory.isEmpty()) {
+        Map<String, Integer> amountByBenefit = benefit.findHistory();
+        if (amountByBenefit.isEmpty()) {
             System.out.println(NOTHING);
             return;
         }
-        payment.tooString().entrySet()
+        benefit.findHistory().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() != 0)
                 .forEach(entry -> {
@@ -71,13 +71,13 @@ public class OutputView {
                 });
 
         if (gift.getFree()) {
-            System.out.printf("증정 이벤트: -%s원\n", decimalFormat.format(gift.getPresentDiscountPrice()));
+            System.out.printf("증정 이벤트: -%s원\n", decimalFormat.format(gift.getAmount()));
         }
     }
 
-    public void printTotalDiscounts(Payment payment, GiftEvent presentDiscount) {
+    public void printTotalDiscounts(Benefits payment, GiftEvent presentDiscount) {
         System.out.println("<총혜택 금액>");
-        int totalDiscounts = payment.getTotalDiscountBenefit();
+        int totalDiscounts = payment.getTotalDiscountAmount();
 
         if (totalDiscounts == 0) {
             System.out.println("0원\n");
@@ -86,10 +86,10 @@ public class OutputView {
         System.out.printf("-%s원\n", decimalFormat.format(totalDiscounts));
     }
 
-    public void printExpectedPriceByOrder(Order order, Payment payment, GiftEvent presentDiscount) {
+    public void printExpectedPriceByOrder(Order order, Benefits payment, GiftEvent presentDiscount) {
         System.out.println("<할인 후 예상 결제 금액>");
         int totalPrice = order.getTotalPrice();
-        int discountTotalPriceByDate = payment.getTotalDiscountPriceByDate();
+        int discountTotalPriceByDate = payment.getDateDiscountAmount();
         int diffPrice = totalPrice - discountTotalPriceByDate;
 
         expectedPriceOfDecember += diffPrice;
@@ -97,8 +97,8 @@ public class OutputView {
         System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
     }
 
-    public void printBadge(Payment payment, GiftEvent presentDiscount) {
-        int totalDiscounts = payment.getTotalDiscountBenefit();
+    public void printBadge(Benefits payment, GiftEvent presentDiscount) {
+        int totalDiscounts = payment.getTotalDiscountAmount();
         System.out.println("<12월 이벤트 배지>");
         if (totalDiscounts < 5000) {
             System.out.println("없음");
