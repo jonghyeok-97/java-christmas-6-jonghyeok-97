@@ -7,9 +7,18 @@ import java.text.DecimalFormat;
 import java.util.Map;
 
 public class OutputView {
+    private static final String HELLO = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+
     private long expectedPriceOfDecember;
     private int countParticipateCustomer;
 
+    public void printHelloMessage() {
+        System.out.println(HELLO);
+    }
+
+    public void printError(String errorMessage) {
+        System.out.println(errorMessage);
+    }
     public void printEventResultMessage() {
         System.out.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
     }

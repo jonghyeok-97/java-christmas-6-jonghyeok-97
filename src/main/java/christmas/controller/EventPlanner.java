@@ -12,8 +12,8 @@ import christmas.view.OutputView;
 import christmas.model.dateDiscount.WeekdaysDiscount;
 
 public class EventPlanner {
-    private InputView inputView;
-    private OutputView outputView;
+    private final InputView inputView;
+    private final OutputView outputView;
 
     public EventPlanner() {
         this.inputView = new InputView();
@@ -21,7 +21,7 @@ public class EventPlanner {
     }
 
     public void start() {
-        System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
+        outputView.printHelloMessage();
         VisitDate visitDate = createVisitDate();
         Order order = createOrder();
 
@@ -52,7 +52,7 @@ public class EventPlanner {
         try {
             return new VisitDate(inputView.readDate());
         } catch (IllegalArgumentException error) {
-            System.out.println(error.getMessage());
+            outputView.printError(error.getMessage());
             return createVisitDate();
         }
     }
@@ -61,7 +61,7 @@ public class EventPlanner {
         try {
             return new Order(inputView.readOrder());
         } catch (IllegalArgumentException error) {
-            System.out.println(error.getMessage());
+            outputView.printError(error.getMessage());
             return createOrder();
         }
     }
