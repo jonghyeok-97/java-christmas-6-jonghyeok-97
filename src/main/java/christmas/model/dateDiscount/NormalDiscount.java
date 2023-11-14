@@ -6,7 +6,7 @@ import christmas.model.December;
 import christmas.model.VisitDate;
 
 public class NormalDiscount extends DateDiscount {
-    private static final int AMOUNT_PER_DATE = 100;
+    private static final int NORMAL_AMOUNT_PER_DATE = 100;
     private static final int DEFAULT_AMOUNT = 900;
 
     private final int normalAmount;
@@ -27,7 +27,7 @@ public class NormalDiscount extends DateDiscount {
 
     private int calculateNormalAmount(VisitDate visitDate) {
         if (visitDate.isNormalDate()) {
-            return visitDate.getDate() * AMOUNT_PER_DATE + DEFAULT_AMOUNT;
+            return visitDate.getDate() * NORMAL_AMOUNT_PER_DATE + DEFAULT_AMOUNT;
         }
         return ZERO;
     }
