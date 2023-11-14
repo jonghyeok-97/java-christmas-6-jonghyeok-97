@@ -11,12 +11,10 @@ import java.util.stream.Stream;
 public class Benefits {
     private final List<DateDiscount> dateDiscounts;
     private final int dateDiscountAmount; // 날짜 할인
-    private final int totalDiscountAmount; // 날짜 할인 + 증정
 
-    public Benefits(GiftEvent gift, Order order, DateDiscount ... dateDiscounts) {
+    public Benefits(Order order, DateDiscount ... dateDiscounts) {
         this.dateDiscounts = setDateDiscounts(order, dateDiscounts);
         this.dateDiscountAmount = sumDateDiscountAmount();
-        this.totalDiscountAmount = this.dateDiscountAmount + gift.getAmount();
     }
 
     public Map<String, Integer> findHistory() {
@@ -29,10 +27,6 @@ public class Benefits {
 
     public int getDateDiscountAmount() {
         return dateDiscountAmount;
-    }
-
-    public int getTotalDiscountAmount() {
-        return totalDiscountAmount;
     }
 
     private List<DateDiscount> setDateDiscounts(Order order, DateDiscount ... dateDiscounts) {

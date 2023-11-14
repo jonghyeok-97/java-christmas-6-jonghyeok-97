@@ -23,7 +23,7 @@ public class BenefitsTest {
     void underMinOrderedAmount(String menu) {
         VisitDate visitDate = new VisitDate("3");
         Order order = new Order(menu);
-        Benefits benefit = new Benefits(new GiftEvent(order), order, new NormalDiscount(visitDate),
+        Benefits benefit = new Benefits(order, new NormalDiscount(visitDate),
                 new WeekendDiscount(visitDate, order), new WeekdaysDiscount(visitDate, order),
                 new SpecialDiscount(visitDate));
 
@@ -39,7 +39,7 @@ public class BenefitsTest {
     void apply_Normal_Weekdays_Special_Discount(String menu) {
         VisitDate visitDate = new VisitDate("3");
         Order order = new Order(menu);
-        Benefits benefit = new Benefits(new GiftEvent(order), order, new NormalDiscount(visitDate),
+        Benefits benefit = new Benefits(order, new NormalDiscount(visitDate),
                 new WeekendDiscount(visitDate, order), new WeekdaysDiscount(visitDate, order),
                 new SpecialDiscount(visitDate));
 
@@ -58,7 +58,7 @@ public class BenefitsTest {
     void apply_Normal_Weekend(String menu) {
         VisitDate visitDate = new VisitDate("15");
         Order order = new Order(menu);
-        Benefits benefit = new Benefits(new GiftEvent(order), order, new NormalDiscount(visitDate),
+        Benefits benefit = new Benefits(order, new NormalDiscount(visitDate),
                 new WeekendDiscount(visitDate, order), new WeekdaysDiscount(visitDate, order),
                 new SpecialDiscount(visitDate));
 

@@ -101,10 +101,10 @@ public class OutputView {
         }
     }
 
-    public void printTotalDiscounts(Benefits benefit) {
+    public void printTotalDiscounts(Benefits benefit, GiftEvent gift) {
         newLine();
         System.out.println(TOTAL_BENEFIT_AMOUNT);
-        int totalDiscounts = benefit.getTotalDiscountAmount();
+        int totalDiscounts = benefit.getDateDiscountAmount() + gift.getAmount();
         if (totalDiscounts == ZERO) {
             System.out.printf(AMOUNT, ZERO);
             return;
@@ -122,10 +122,10 @@ public class OutputView {
         countParticipatedCustomer++;
     }
 
-    public void printBadge(Benefits benefit) {
+    public void printBadge(Benefits benefit, GiftEvent gift) {
         newLine();
         System.out.println(BADGE);
-        int totalDiscountAmount = benefit.getTotalDiscountAmount();
+        int totalDiscountAmount = benefit.getDateDiscountAmount() + gift.getAmount();
         printBadgeOf(totalDiscountAmount);
     }
 
