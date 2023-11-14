@@ -13,9 +13,6 @@ public class Order {
     private static final String ERROR_ONLY_BEVERAGE = "[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.";
 
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
-    // 주문한 메뉴 타입과 가격
-    //private final Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
-    // 총 주문 금액
     private int totalPrice;
 
     public Order(String input) throws IllegalArgumentException {
@@ -54,10 +51,6 @@ public class Order {
             duplicateMenu.add(menu);
 
             countByOrderedMenu.put(menu ,count);
-
-            MenuBoard menuType = MenuBoard.findType(menu);
-            int menuPrice = MenuBoard.getPrice(menu);
-            //priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * count);
         }
         if (dashes.size() != duplicateMenu.size()) {
             throw new IllegalArgumentException(ERROR_RETRY_ORDER);
