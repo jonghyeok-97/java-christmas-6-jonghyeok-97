@@ -3,8 +3,6 @@ package christmas.model;
 import static christmas.Constants.ZERO;
 
 import christmas.model.dateDiscount.DateDiscount;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,7 +13,7 @@ public class Benefits {
     private final int dateDiscountAmount; // 날짜 할인
     private final int totalDiscountAmount; // 날짜 할인 + 증정
 
-    public Benefits(Order order, GiftEvent gift, DateDiscount ... dateDiscounts) {
+    public Benefits(GiftEvent gift, Order order, DateDiscount ... dateDiscounts) {
         this.dateDiscounts = setDateDiscounts(order, dateDiscounts);
         this.dateDiscountAmount = sumDateDiscountAmount();
         this.totalDiscountAmount = this.dateDiscountAmount + gift.getAmount();
@@ -24,8 +22,8 @@ public class Benefits {
     public Map<String, Integer> findHistory() {
         return dateDiscounts.stream()
                 .collect(Collectors.toMap(
-                        DateDiscount::getMessage,
-                        DateDiscount::getPrice
+                        DateDiscount::getDiscountType,
+                        DateDiscount::getAmount
                 ));
     }
 
@@ -44,20 +42,20 @@ public class Benefits {
     }
 
     private boolean isValidDiscount(Order order, DateDiscount dateDiscount) {
-        return isValidOrderedAmount(order) && hasDiscountAmount(dateDiscount);
+        return isOverMinTotalAmount(order) && hasDiscountAmount(dateDiscount);
     }
 
-    private boolean isValidOrderedAmount(Order order) {
+    private boolean isOverMinTotalAmount(Order order) {
         return order.isOverMinAmount();
     }
 
     private boolean hasDiscountAmount(DateDiscount dateDiscount) {
-        return dateDiscount.getPrice() != ZERO;
+        return dateDiscount.getAmount() != ZERO;
     }
 
     private int sumDateDiscountAmount() {
         return this.dateDiscounts.stream()
-                .mapToInt(DateDiscount::getPrice)
+                .mapToInt(DateDiscount::getAmount)
                 .sum();
     }
 }
