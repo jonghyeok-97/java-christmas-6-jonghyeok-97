@@ -15,7 +15,7 @@ public class Order {
     private static final String MENU_DELIMETER = "-";
 
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
-    private final int totalAmount;
+    private final int totalPrice;
 
     public Order(String input) throws IllegalArgumentException {
         validateOrder(input);
@@ -55,18 +55,12 @@ public class Order {
             throw new IllegalArgumentException(ERROR_MAX_MENU_COUNT);
         }
         validateOnlyBeverage();
-        this.totalAmount = setTotalAmount();
+        this.totalPrice = calculateTotalAmount();
 
     }
 
-    private int setTotalAmount() {
-        return this.countByOrderedMenu.keySet().stream()
-                .mapToInt(menu -> MenuBoard.getPrice(menu) * this.countByOrderedMenu.get(menu))
-                .sum();
-    }
-
-    public int getTotalAmount() {
-        return totalAmount;
+    public int getTotalPrice() {
+        return totalPrice;
     }
 
     public Map<String, Integer> getCountByOrderedMenu() {
@@ -74,10 +68,10 @@ public class Order {
     }
 
     public boolean isOverMinAmount() {
-        return totalAmount >= 10000;
+        return totalPrice >= 10000;
     }
     public boolean isOverMinPresentPrice() {
-        return totalAmount >= 120000;
+        return totalPrice >= 120000;
     }
 
     public int countDessertMenu() {
@@ -129,5 +123,19 @@ public class Order {
     private boolean hasDishFromMenu() {
         return this.countByOrderedMenu.keySet().stream()
                 .anyMatch(MenuBoard::findDish);
+    }
+
+    private int calculateTotalAmount() {
+        return this.countByOrderedMenu.keySet().stream()
+                .mapToInt(menu -> priceOf(menu) * countOf(menu))
+                .sum();
+    }
+
+    private int priceOf(String menu) {
+        return MenuBoard.getPrice(menu);
+    }
+
+    private int countOf(String menu) {
+        return this.countByOrderedMenu.get(menu);
     }
 }
