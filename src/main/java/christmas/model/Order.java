@@ -11,19 +11,20 @@ public class Order {
     private static final String ERROR_RETRY_ORDER = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
     private static final String ERROR_MAX_MENU_COUNT = "[ERROR] 메뉴의 총 개수는 최대 20개 입니다.";
     private static final String ERROR_ONLY_BEVERAGE = "[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.";
+    private static final String ORDER_DELIMETER = ",";
+    private static final String MENU_DELIMETER = "-";
 
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
     private int totalPrice;
 
     public Order(String input) throws IllegalArgumentException {
-        validate(input);
-        List<String> dashes = Stream.of(input.split(","))
+        validateOrder(input);
+        List<String> dashes = Stream.of(input.split(ORDER_DELIMETER))
                 .toList();
         Set<String> duplicateMenu = new HashSet<>();
         int totalCount = 0;
-        boolean hasDish = false;
         for (String s : dashes) {
-            int idx = s.indexOf('-');
+            int idx = s.indexOf(MENU_DELIMETER);
             if (idx == -1) {
                 throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
@@ -41,13 +42,8 @@ public class Order {
                 throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
             totalCount += count;
+            validateOnMenuBorad(menu);
 
-            if (!MenuBoard.compare(menu)) {
-                throw new IllegalArgumentException(ERROR_RETRY_ORDER);
-            }
-            if (!hasDish && MenuBoard.findDish(menu)) {
-                hasDish = true;
-            }
             duplicateMenu.add(menu);
 
             countByOrderedMenu.put(menu ,count);
@@ -58,13 +54,16 @@ public class Order {
         if (totalCount > 20) {
             throw new IllegalArgumentException(ERROR_MAX_MENU_COUNT);
         }
-        if (!hasDish) {
-            throw new IllegalArgumentException(ERROR_ONLY_BEVERAGE);
-        }
+
         for (String menu : countByOrderedMenu.keySet()) {
             this.totalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
         }
+
+        validateOnlyBeverage();
+
     }
+
+
 
     public int getTotalPrice() {
         return totalPrice;
@@ -84,24 +83,24 @@ public class Order {
     public int countDessertMenu() {
         return countByOrderedMenu.keySet().stream()
                 .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.DESSERT))
-                .mapToInt(menu -> countByOrderedMenu.get(menu))
+                .mapToInt(countByOrderedMenu::get)
                 .sum();
     }
 
     public int countMainMenu() {
         return countByOrderedMenu.keySet().stream()
                 .filter(menu -> MenuBoard.findType(menu).equals(MenuBoard.MAIN))
-                .mapToInt(menu -> countByOrderedMenu.get(menu))
+                .mapToInt(countByOrderedMenu::get)
                 .sum();
     }
 
-    private void validate(String input) {
-        validateSplitedDelemeter(input);
-        validateEndsWithDelemeter(input);
+    private void validateOrder(String input) {
+        validateOrderDelemeter(input);
+        validateEndsWithOrderDelemeter(input);
     }
 
-    private void validateSplitedDelemeter(String input) {
-        Stream.of(input.split(","))
+    private void validateOrderDelemeter(String input) {
+        Stream.of(input.split(ORDER_DELIMETER))
                 .filter(String::isEmpty)
                 .findAny()
                 .ifPresent(splited -> {
@@ -109,9 +108,26 @@ public class Order {
                 });
     }
 
-    private void validateEndsWithDelemeter(String input) {
-        if (input.endsWith(",")) {
+    private void validateEndsWithOrderDelemeter(String input) {
+        if (input.endsWith(ORDER_DELIMETER)) {
             throw new IllegalArgumentException(ERROR_RETRY_ORDER);
         }
+    }
+
+    private void validateOnMenuBorad(String menu) {
+        if (!MenuBoard.contains(menu)) {
+            throw new IllegalArgumentException(ERROR_RETRY_ORDER);
+        }
+    }
+
+    private void validateOnlyBeverage() {
+        if (!hasDishFromMenu()) {
+            throw new IllegalArgumentException(ERROR_ONLY_BEVERAGE);
+        }
+    }
+
+    private boolean hasDishFromMenu() {
+        return this.countByOrderedMenu.keySet().stream()
+                .anyMatch(MenuBoard::findDish);
     }
 }
