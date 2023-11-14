@@ -1,6 +1,29 @@
 package christmas.view;
 
 import static christmas.Constants.ZERO;
+import static christmas.view.OutputViewMessage.AMOUNT;
+import static christmas.view.OutputViewMessage.AMOUNT_DISCOUNT;
+import static christmas.view.OutputViewMessage.AMOUNT_PER_BENEFIT;
+import static christmas.view.OutputViewMessage.AMOUNT_RESULT;
+import static christmas.view.OutputViewMessage.BADGE;
+import static christmas.view.OutputViewMessage.BADGE_SANTA;
+import static christmas.view.OutputViewMessage.BADGE_STAR;
+import static christmas.view.OutputViewMessage.BADGE_TREE;
+import static christmas.view.OutputViewMessage.BENEFITS_HISTORY;
+import static christmas.view.OutputViewMessage.EXPECTED_AMOUNT_AFTER_BENEFIT;
+import static christmas.view.OutputViewMessage.GIFT_BENEFIT;
+import static christmas.view.OutputViewMessage.GIFT_MENU;
+import static christmas.view.OutputViewMessage.MENU_AND_COUNT;
+import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_SANTA;
+import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_STAR;
+import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_TREE;
+import static christmas.view.OutputViewMessage.NOTHING;
+import static christmas.view.OutputViewMessage.ONE_GIFT;
+import static christmas.view.OutputViewMessage.ORDERED_MENU;
+import static christmas.view.OutputViewMessage.PREVIEW_GUIDE;
+import static christmas.view.OutputViewMessage.TOTAL_AMOUNT_BEFORE_DISCOUNT;
+import static christmas.view.OutputViewMessage.TOTAL_BENEFIT_AMOUNT;
+import static christmas.view.OutputViewMessage.WELCOME;
 
 import christmas.model.Order;
 import christmas.model.Benefits;
@@ -10,29 +33,15 @@ import java.text.DecimalFormat;
 import java.util.Map;
 
 public class OutputView {
-    private static final String WELCOME = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
-    private static final String PREVIEW_GUIDE = "12월 %d일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n";
-    private static final String ORDERED_MENU = "<주문 메뉴>";
-    private static final String MENU_AND_COUNT = "%s %d개\n";
-    private static final String TOTAL_AMOUNT_BEFORE_DISCOUNT = "<할인 전 총주문 금액>";
     private static final String EVERY_THREE_DIGITS = "###,###";
-    private static final String GIFT_MENU = "<증정 메뉴>";
-    private static final String ONE_GIFT = "샴페인 1개";
-    private static final String NOTHING = "없음";
-    private static final String BENEFITS_HISTORY = "<혜택 내역>";
-    private static final String AMOUNT_PER_BENEFIT = "%s -%s원\n";
-    private static final String GIFT_BENEFIT = "증정 이벤트: -%s원\n";
-
     private final DecimalFormat decimalFormat = new DecimalFormat(EVERY_THREE_DIGITS);
+    // 최고 판매 금액을 위한 목표를 달성 하기 위해 이벤트 기간 중에 할인혜택들을 변동 할지말지에 대한 기준을 세울 수 있게
     private long expectedPriceOfDecember;
-    private int countParticipateCustomer;
+    // 중복참여하는 고객이 있을 수 있으나 이벤트 기간 중 참여 고객이 저조할 경우 할인혜택을 변동 할지말지에 대한 기준을 세울 수 있게
+    private int countParticipatedCustomer;
 
     public void printWelcomeMessage() {
         System.out.println(WELCOME);
-    }
-
-    public void printError(String errorMessage) {
-        System.out.println(errorMessage);
     }
 
     public void printPreviewMessage(VisitDate visitDate) {
@@ -47,11 +56,13 @@ public class OutputView {
     }
 
     public void printTotalAmountBeforeDiscount(Order order) {
+        newLine();
         System.out.println(TOTAL_AMOUNT_BEFORE_DISCOUNT);
-        System.out.println(decimalFormat.format(order.getTotalAmount()) + "원");
+        System.out.printf(AMOUNT, decimalFormat.format(order.getTotalAmount()));
     }
 
     public void printPresent(GiftEvent gift) {
+        newLine();
         System.out.println(GIFT_MENU);
         if (!gift.getFree()) {
             System.out.println(NOTHING);
@@ -61,52 +72,10 @@ public class OutputView {
     }
 
     public void printBenefits(Benefits benefit, GiftEvent gift) {
+        newLine();
         System.out.println(BENEFITS_HISTORY);
         printAmountByBenefit(benefit.findHistory());
         printGiftBenefit(gift);
-    }
-
-    public void printTotalDiscounts(Benefits benefit, GiftEvent presentDiscount) {
-        System.out.println("<총혜택 금액>");
-        int totalDiscounts = benefit.getTotalDiscountAmount();
-
-        if (totalDiscounts == 0) {
-            System.out.println("0원\n");
-            return;
-        }
-        System.out.printf("-%s원\n", decimalFormat.format(totalDiscounts));
-    }
-
-    public void printExpectedPriceByOrder(Order order, Benefits payment, GiftEvent presentDiscount) {
-        System.out.println("<할인 후 예상 결제 금액>");
-        int totalPrice = order.getTotalAmount();
-        int discountTotalPriceByDate = payment.getDateDiscountAmount();
-        int diffPrice = totalPrice - discountTotalPriceByDate;
-
-        expectedPriceOfDecember += diffPrice;
-        countParticipateCustomer++;
-        System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
-    }
-
-    public void printBadge(Benefits benefit, GiftEvent gift) {
-        int totalDiscountAmount = benefit.getTotalDiscountAmount();
-        System.out.println("<12월 이벤트 배지>");
-        if (totalDiscountAmount < 5000) {
-            System.out.println("없음");
-        }
-        if (5000 <= totalDiscountAmount && totalDiscountAmount < 10000) {
-            System.out.println("별");
-        }
-        if (10000 <= totalDiscountAmount && totalDiscountAmount < 20000) {
-            System.out.println("트리");
-        }
-        if (20000 <= totalDiscountAmount) {
-            System.out.println("산타");
-        }
-    }
-
-    public void newLine() {
-        System.out.println();
     }
 
     private void printAmountByBenefit(Map<String, Integer> amountByBenefit) {
@@ -116,9 +85,14 @@ public class OutputView {
         }
         amountByBenefit.entrySet().stream()
                 .filter(amount -> hasAmount(amount.getValue()))
-                .forEach(entry -> {
-                    System.out.printf(AMOUNT_PER_BENEFIT, entry.getKey(), decimalFormat.format(entry.getValue()));
+                .forEach(discountType -> {
+                    System.out.printf(AMOUNT_PER_BENEFIT,
+                            discountType.getKey(), decimalFormat.format(discountType.getValue()));
                 });
+    }
+
+    private boolean hasAmount(int amount) {
+        return amount != ZERO;
     }
 
     private void printGiftBenefit(GiftEvent gift) {
@@ -127,7 +101,54 @@ public class OutputView {
         }
     }
 
-    private boolean hasAmount(int amount) {
-        return amount != ZERO;
+    public void printTotalDiscounts(Benefits benefit) {
+        newLine();
+        System.out.println(TOTAL_BENEFIT_AMOUNT);
+        int totalDiscounts = benefit.getTotalDiscountAmount();
+        if (totalDiscounts == ZERO) {
+            System.out.printf(AMOUNT, ZERO);
+            return;
+        }
+        System.out.printf(AMOUNT_DISCOUNT, decimalFormat.format(totalDiscounts));
+    }
+
+    public void printExpectedPriceByOrder(Order order, Benefits benefit) {
+        newLine();
+        System.out.println(EXPECTED_AMOUNT_AFTER_BENEFIT);
+        int expectedAmount = order.getTotalAmount() - benefit.getDateDiscountAmount();
+        System.out.printf(AMOUNT_RESULT, decimalFormat.format(expectedAmount));
+
+        expectedPriceOfDecember += expectedAmount;
+        countParticipatedCustomer++;
+    }
+
+    public void printBadge(Benefits benefit) {
+        newLine();
+        System.out.println(BADGE);
+        int totalDiscountAmount = benefit.getTotalDiscountAmount();
+        printBadgeOf(totalDiscountAmount);
+    }
+
+    private void printBadgeOf(int totalDiscountAmount) {
+        if (totalDiscountAmount < MIN_AMOUNT_OF_STAR) {
+            System.out.print(NOTHING);
+        }
+        else if (totalDiscountAmount < MIN_AMOUNT_OF_TREE) {
+            System.out.print(BADGE_STAR);
+        }
+        else if (totalDiscountAmount < MIN_AMOUNT_OF_SANTA) {
+            System.out.print(BADGE_TREE);
+        }
+        else {
+            System.out.print(BADGE_SANTA);
+        }
+    }
+
+    public void newLine() {
+        System.out.println();
+    }
+
+    public void printError(String errorMessage) {
+        System.out.println(errorMessage);
     }
 }
