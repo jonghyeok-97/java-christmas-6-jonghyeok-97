@@ -8,10 +8,13 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class Order {
-    // 주문한 메뉴 이름과 개수
+    private static final String ERROR_RETRY_ORDER = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
+    private static final String ERROR_MAX_MENU_COUNT = "[ERROR] 메뉴의 총 개수는 최대 20개 입니다.";
+    private static final String ERROR_ONLY_BEVERAGE = "[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.";
+
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
     // 주문한 메뉴 타입과 가격
-    private final Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
+    //private final Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
     // 총 주문 금액
     private int totalPrice;
 
@@ -25,11 +28,11 @@ public class Order {
         for (String s : dashes) {
             int idx = s.indexOf('-');
             if (idx == -1) {
-                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
             String menu = s.substring(0, idx);
             if (menu.isEmpty()) {
-                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
             int count = 0;
             try {
@@ -38,12 +41,12 @@ public class Order {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException error) {
-                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
             totalCount += count;
 
             if (!MenuBoard.compare(menu)) {
-                throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                throw new IllegalArgumentException(ERROR_RETRY_ORDER);
             }
             if (!hasDish && MenuBoard.findDish(menu)) {
                 hasDish = true;
@@ -54,16 +57,16 @@ public class Order {
 
             MenuBoard menuType = MenuBoard.findType(menu);
             int menuPrice = MenuBoard.getPrice(menu);
-            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * count);
+            //priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * count);
         }
         if (dashes.size() != duplicateMenu.size()) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ERROR_RETRY_ORDER);
         }
-        if (totalCount >= 21) {
-            throw new IllegalArgumentException("[ERROR] 메뉴의 총 개수는 최대 20개 입니다.");
+        if (totalCount > 20) {
+            throw new IllegalArgumentException(ERROR_MAX_MENU_COUNT);
         }
         if (!hasDish) {
-            throw new IllegalArgumentException("[ERROR] 음료만 주문할 수 없습니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ERROR_ONLY_BEVERAGE);
         }
         for (String menu : countByOrderedMenu.keySet()) {
             this.totalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
@@ -78,7 +81,7 @@ public class Order {
         return countByOrderedMenu;
     }
 
-    public boolean isOverMinDiscountPrice() {
+    public boolean isOverMinAmount() {
         return totalPrice >= 10000;
     }
     public boolean isOverMinPresentPrice() {
@@ -109,13 +112,13 @@ public class Order {
                 .filter(String::isEmpty)
                 .findAny()
                 .ifPresent(splited -> {
-                    throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                    throw new IllegalArgumentException(ERROR_RETRY_ORDER);
                 });
     }
 
     private void validateEndsWithDelemeter(String input) {
         if (input.endsWith(",")) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ERROR_RETRY_ORDER);
         }
     }
 }
