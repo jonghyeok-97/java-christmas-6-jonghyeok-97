@@ -1,4 +1,4 @@
-package christmas.Model;
+package christmas.model;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -17,26 +17,26 @@ public enum MenuBoard {
         this.menu = menu;
     }
 
-    public static boolean compare(String orderedMenu) {
+    public static boolean contains(String orderedMenu) {
         return Stream.of(MenuBoard.values())
-                .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
+                .anyMatch(type -> type.menu.containsKey(orderedMenu));
     }
 
     public static MenuBoard findType(String orderedMenu) {
         return Stream.of(MenuBoard.values())
-                .filter(type -> type.menu.keySet().contains(orderedMenu))
+                .filter(type -> type.menu.containsKey(orderedMenu))
                 .findAny()
                 .orElse(NONE);
     }
 
     public static boolean findDish(String orderedMenu) {
         return Stream.of(MenuBoard.APPETIZER, MenuBoard.DESSERT, MenuBoard.MAIN)
-                .anyMatch(type -> type.menu.keySet().contains(orderedMenu));
+                .anyMatch(type -> type.menu.containsKey(orderedMenu));
     }
 
     public static int getPrice(String orderedMenu) {
         return Stream.of(MenuBoard.values())
-                .filter(type -> type.menu.keySet().contains(orderedMenu))
+                .filter(type -> type.menu.containsKey(orderedMenu))
                 .map(type -> type.menu.get(orderedMenu))
                 .findAny()
                 .orElse(0);
