@@ -15,7 +15,7 @@ public class Order {
     private static final String MENU_DELIMETER = "-";
 
     private final Map<String, Integer> countByOrderedMenu = new HashMap<>();
-    private int totalPrice;
+    private final int totalAmount;
 
     public Order(String input) throws IllegalArgumentException {
         validateOrder(input);
@@ -54,19 +54,19 @@ public class Order {
         if (totalCount > 20) {
             throw new IllegalArgumentException(ERROR_MAX_MENU_COUNT);
         }
-
-        for (String menu : countByOrderedMenu.keySet()) {
-            this.totalPrice += MenuBoard.getPrice(menu) * countByOrderedMenu.get(menu);
-        }
-
         validateOnlyBeverage();
+        this.totalAmount = setTotalAmount();
 
     }
 
+    private int setTotalAmount() {
+        return this.countByOrderedMenu.keySet().stream()
+                .mapToInt(menu -> MenuBoard.getPrice(menu) * this.countByOrderedMenu.get(menu))
+                .sum();
+    }
 
-
-    public int getTotalPrice() {
-        return totalPrice;
+    public int getTotalAmount() {
+        return totalAmount;
     }
 
     public Map<String, Integer> getCountByOrderedMenu() {
@@ -74,10 +74,10 @@ public class Order {
     }
 
     public boolean isOverMinAmount() {
-        return totalPrice >= 10000;
+        return totalAmount >= 10000;
     }
     public boolean isOverMinPresentPrice() {
-        return totalPrice >= 120000;
+        return totalAmount >= 120000;
     }
 
     public int countDessertMenu() {
