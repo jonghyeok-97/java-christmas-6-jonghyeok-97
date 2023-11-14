@@ -1,25 +1,35 @@
 package christmas.model.dateDiscount;
 
+import static christmas.Constants.ZERO;
+
 import christmas.model.December;
-import christmas.model.Order;
 import christmas.model.VisitDate;
 
 public class NormalDiscount extends DateDiscount {
-    private int normalPrice;
+    private static final int AMOUNT_PER_DATE = 100;
+    private static final int DEFAULT_AMOUNT = 900;
 
-    public NormalDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isNormalDate()){
-            this.normalPrice = visitDate.getDate() * 100 + 900;
+    private final int normalAmount;
+
+    public NormalDiscount(VisitDate visitDate) {
+        this.normalAmount = calculateNormalAmount(visitDate);
+    }
+
+    @Override
+    public String getDiscountType() {
+        return December.find(December.NORMAL);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.normalAmount;
+    }
+
+    private int calculateNormalAmount(VisitDate visitDate) {
+        if (visitDate.isNormalDate()) {
+            return visitDate.getDate() * AMOUNT_PER_DATE + DEFAULT_AMOUNT;
         }
+        return ZERO;
     }
-
-    public String getMessage() {
-        return December.Message(December.NORMAL);
-    }
-
-    public int getPrice() {
-        return this.normalPrice;
-    }
-
 }
 
