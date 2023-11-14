@@ -1,5 +1,7 @@
 package christmas.model;
 
+import static christmas.Constants.ZERO;
+
 import christmas.model.dateDiscount.DateDiscount;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +52,7 @@ public class Benefits {
     }
 
     private boolean hasDiscountAmount(DateDiscount dateDiscount) {
-        return dateDiscount.getPrice() != 0;
+        return dateDiscount.getPrice() != ZERO;
     }
 
     private int sumDateDiscountAmount() {
