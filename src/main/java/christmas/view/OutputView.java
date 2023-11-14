@@ -1,5 +1,7 @@
 package christmas.view;
 
+import static christmas.Constants.ZERO;
+
 import christmas.model.Order;
 import christmas.model.Benefits;
 import christmas.model.GiftEvent;
@@ -18,8 +20,10 @@ public class OutputView {
     private static final String ONE_GIFT = "샴페인 1개";
     private static final String NOTHING = "없음";
     private static final String BENEFITS_HISTORY = "<혜택 내역>";
+    private static final String AMOUNT_PER_BENEFIT = "%s -%s원\n";
+    private static final String GIFT_BENEFIT = "증정 이벤트: -%s원\n";
 
-    private DecimalFormat decimalFormat = new DecimalFormat(EVERY_THREE_DIGITS);
+    private final DecimalFormat decimalFormat = new DecimalFormat(EVERY_THREE_DIGITS);
     private long expectedPriceOfDecember;
     private int countParticipateCustomer;
 
@@ -44,7 +48,7 @@ public class OutputView {
 
     public void printTotalAmountBeforeDiscount(Order order) {
         System.out.println(TOTAL_AMOUNT_BEFORE_DISCOUNT);
-        System.out.println(decimalFormat.format(order.getTotalPrice()) + "원");
+        System.out.println(decimalFormat.format(order.getTotalAmount()) + "원");
     }
 
     public void printPresent(GiftEvent gift) {
@@ -56,28 +60,15 @@ public class OutputView {
         System.out.println(ONE_GIFT);
     }
 
-    public void printDiscounts(Benefits benefit, GiftEvent gift) {
+    public void printBenefits(Benefits benefit, GiftEvent gift) {
         System.out.println(BENEFITS_HISTORY);
-        Map<String, Integer> amountByBenefit = benefit.findHistory();
-        if (amountByBenefit.isEmpty()) {
-            System.out.println(NOTHING);
-            return;
-        }
-        benefit.findHistory().entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() != 0)
-                .forEach(entry -> {
-                    System.out.printf("%s -%s원\n", entry.getKey(), decimalFormat.format(entry.getValue()));
-                });
-
-        if (gift.getFree()) {
-            System.out.printf("증정 이벤트: -%s원\n", decimalFormat.format(gift.getAmount()));
-        }
+        printAmountByBenefit(benefit.findHistory());
+        printGiftBenefit(gift);
     }
 
-    public void printTotalDiscounts(Benefits payment, GiftEvent presentDiscount) {
+    public void printTotalDiscounts(Benefits benefit, GiftEvent presentDiscount) {
         System.out.println("<총혜택 금액>");
-        int totalDiscounts = payment.getTotalDiscountAmount();
+        int totalDiscounts = benefit.getTotalDiscountAmount();
 
         if (totalDiscounts == 0) {
             System.out.println("0원\n");
@@ -88,7 +79,7 @@ public class OutputView {
 
     public void printExpectedPriceByOrder(Order order, Benefits payment, GiftEvent presentDiscount) {
         System.out.println("<할인 후 예상 결제 금액>");
-        int totalPrice = order.getTotalPrice();
+        int totalPrice = order.getTotalAmount();
         int discountTotalPriceByDate = payment.getDateDiscountAmount();
         int diffPrice = totalPrice - discountTotalPriceByDate;
 
@@ -97,24 +88,46 @@ public class OutputView {
         System.out.printf("-%s원\n", decimalFormat.format(diffPrice));
     }
 
-    public void printBadge(Benefits payment, GiftEvent presentDiscount) {
-        int totalDiscounts = payment.getTotalDiscountAmount();
+    public void printBadge(Benefits benefit, GiftEvent gift) {
+        int totalDiscountAmount = benefit.getTotalDiscountAmount();
         System.out.println("<12월 이벤트 배지>");
-        if (totalDiscounts < 5000) {
+        if (totalDiscountAmount < 5000) {
             System.out.println("없음");
         }
-        if (5000 <= totalDiscounts && totalDiscounts < 10000) {
+        if (5000 <= totalDiscountAmount && totalDiscountAmount < 10000) {
             System.out.println("별");
         }
-        if (10000 <= totalDiscounts && totalDiscounts < 20000) {
+        if (10000 <= totalDiscountAmount && totalDiscountAmount < 20000) {
             System.out.println("트리");
         }
-        if (20000 <= totalDiscounts) {
+        if (20000 <= totalDiscountAmount) {
             System.out.println("산타");
         }
     }
 
     public void newLine() {
         System.out.println();
+    }
+
+    private void printAmountByBenefit(Map<String, Integer> amountByBenefit) {
+        if (amountByBenefit.isEmpty()) {
+            System.out.println(NOTHING);
+            return;
+        }
+        amountByBenefit.entrySet().stream()
+                .filter(amount -> hasAmount(amount.getValue()))
+                .forEach(entry -> {
+                    System.out.printf(AMOUNT_PER_BENEFIT, entry.getKey(), decimalFormat.format(entry.getValue()));
+                });
+    }
+
+    private void printGiftBenefit(GiftEvent gift) {
+        if (gift.getFree()) {
+            System.out.printf(GIFT_BENEFIT, decimalFormat.format(gift.getAmount()));
+        }
+    }
+
+    private boolean hasAmount(int amount) {
+        return amount != ZERO;
     }
 }
