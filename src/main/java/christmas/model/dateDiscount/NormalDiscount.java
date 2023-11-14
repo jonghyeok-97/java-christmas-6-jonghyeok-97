@@ -8,7 +8,7 @@ public class NormalDiscount extends DateDiscount {
     private int normalPrice;
 
     public NormalDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isNormalDate() && order.isOverMinDiscountPrice()){
+        if (visitDate.isNormalDate()){
             this.normalPrice = visitDate.getDate() * 100 + 900;
         }
     }

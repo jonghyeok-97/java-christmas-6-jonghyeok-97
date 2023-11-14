@@ -1,8 +1,8 @@
 package christmas.controller;
 
 import christmas.model.Order;
-import christmas.model.Payment;
-import christmas.model.PresentDiscount;
+import christmas.model.Benefits;
+import christmas.model.GiftEvent;
 import christmas.model.VisitDate;
 import christmas.model.dateDiscount.WeekendDiscount;
 import christmas.model.dateDiscount.NormalDiscount;
@@ -26,18 +26,19 @@ public class EventPlanner {
         Order order = createOrder();
 
         outputView.printPreviewMessage(visitDate);
-        outputView.printMenu(order);
+        outputView.printMenuAndCount(order);
 
+        GiftEvent presentDiscount = new GiftEvent(order);
 
-        PresentDiscount presentDiscount = new PresentDiscount(order);
-
-        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
-        WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
-        WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
-        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
-        Payment payment = new Payment(order, presentDiscount, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
-
-        outputView.printTotalPrice(order);
+//        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
+//        WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
+//        WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
+//        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
+//        Benefits payment = new Benefits(order, presentDiscount, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
+        Benefits payment = new Benefits(order, presentDiscount, new NormalDiscount(visitDate, order),
+                new WeekdaysDiscount(visitDate, order)
+                , new WeekendDiscount(visitDate, order), new SpecialDiscount(visitDate, order));
+        outputView.printTotalAmountBeforeDiscount(order);
         outputView.printPresent(presentDiscount);
         // 혜택 내역
         outputView.printDiscounts(payment, presentDiscount);

@@ -1,15 +1,14 @@
 package christmas.model.dateDiscount;
 
-import christmas.December;
+import christmas.model.December;
 import christmas.model.Order;
 import christmas.model.VisitDate;
-import christmas.model.dateDiscount.DateDiscount;
 
 public class WeekdaysDiscount extends DateDiscount {
     private int weekdaysDiscountPrice;
 
     public WeekdaysDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isWeekdaysDate() && order.isOverMinDiscountPrice()) {
+        if (visitDate.isWeekdaysDate()) {
             this.weekdaysDiscountPrice = order.countDessertMenu() * 2023;
         }
     }

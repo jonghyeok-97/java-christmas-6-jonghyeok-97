@@ -1,6 +1,6 @@
 package christmas.model.dateDiscount;
 
-import christmas.December;
+import christmas.model.December;
 import christmas.model.Order;
 import christmas.model.VisitDate;
 
@@ -8,7 +8,7 @@ public class SpecialDiscount extends DateDiscount {
     private int specialDiscountPrice;
 
     public SpecialDiscount(VisitDate visitDate, Order order) {
-        if (visitDate.isSpecialDate() && order.isOverMinDiscountPrice()) {
+        if (visitDate.isSpecialDate() ) {
             this.specialDiscountPrice = 1000;
         }
     }

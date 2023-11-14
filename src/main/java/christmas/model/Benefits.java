@@ -35,10 +35,16 @@ public class Benefits {
     }
 
     private List<DateDiscount> setDateDiscounts(Order order, DateDiscount ... dateDiscounts) {
-        if (order.isOverMinAmount()) {
-            return List.of(dateDiscounts);
+        List<DateDiscount> discounts = new ArrayList<>();
+        for (DateDiscount dateDiscount : dateDiscounts) {
+            if (dateDiscount.getPrice() != 0 && order.isOverMinAmount()) {
+                discounts.add(dateDiscount);
+            }
         }
-        return Collections.unmodifiableList(new ArrayList<>());
+//        if (order.isOverMinAmount()) {
+//            return List.of(dateDiscounts);
+//        }
+        return Collections.unmodifiableList(discounts);
     }
 
     private int sumAmountOfDateDiscount() {
