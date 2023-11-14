@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class VisitDateTest {
     @ParameterizedTest
-    @DisplayName("입력된 날짜가 숫자가 아니면 예외 발생 테스트")
+    @DisplayName("입력된 날짜가 숫자가 아니면 예외가 발생하는 테스트")
     @ValueSource(strings = {"a", " ", "삼십일", "3일"})
     void invalid_DateInput_Throws_Exception(String invalidDate) {
         Assertions.assertThatThrownBy(() -> new VisitDate(invalidDate))
@@ -34,19 +34,21 @@ public class VisitDateTest {
 
     @ParameterizedTest
     @DisplayName("1~25일 일때, 크리스마스디데이할인인지 확인하는 테스트")
-    @ValueSource(strings = {"1", "25", "10"})
-    void isNormalDate(String visitNormalDate) {
-        VisitDate visitDate = new VisitDate(visitNormalDate);
-        boolean actual = visitDate.isNormalDate();
+    @CsvSource(value = {"1,true", "2,true", "25,true", "26,false", "31,false"})
+    void isNormalDate(String normalDate, boolean isNormalDate) {
+        VisitDate visitDate = new VisitDate(normalDate);
 
-        Assertions.assertThat(actual).isEqualTo(true);
+        boolean actual = visitDate.isNormalDate();
+        boolean expected = isNormalDate;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
-    @DisplayName("평일이면 참을 반환하는 테스트")
+    @DisplayName("날짜가 WEEKDAY면 참을 반환하는 테스트")
     @CsvSource(value = {"3,true", "10,true", "15,false", "30,false"})
-    void isWeekdaysDate(String visitWeekdaysDate, boolean isWeekdaysDate) {
-        VisitDate visitDate = new VisitDate(visitWeekdaysDate);
+    void isWeekdaysDate(String weekdaysDate, boolean isWeekdaysDate) {
+        VisitDate visitDate = new VisitDate(weekdaysDate);
 
         boolean actual = visitDate.isWeekdaysDate();
         boolean expected = isWeekdaysDate;
