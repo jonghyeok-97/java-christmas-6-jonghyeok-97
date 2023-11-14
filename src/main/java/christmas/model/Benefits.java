@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Benefits {
     private final List<DateDiscount> dateDiscounts;
@@ -14,7 +15,7 @@ public class Benefits {
 
     public Benefits(Order order, GiftEvent gift, DateDiscount ... dateDiscounts) {
         this.dateDiscounts = setDateDiscounts(order, dateDiscounts);
-        this.dateDiscountAmount = sumAmountOfDateDiscount();
+        this.dateDiscountAmount = sumDateDiscountAmount();
         this.totalDiscountAmount = this.dateDiscountAmount + gift.getAmount();
     }
 
@@ -35,19 +36,24 @@ public class Benefits {
     }
 
     private List<DateDiscount> setDateDiscounts(Order order, DateDiscount ... dateDiscounts) {
-        List<DateDiscount> discounts = new ArrayList<>();
-        for (DateDiscount dateDiscount : dateDiscounts) {
-            if (dateDiscount.getPrice() != 0 && order.isOverMinAmount()) {
-                discounts.add(dateDiscount);
-            }
-        }
-//        if (order.isOverMinAmount()) {
-//            return List.of(dateDiscounts);
-//        }
-        return Collections.unmodifiableList(discounts);
+        return Stream.of(dateDiscounts)
+                .filter(dateDiscount -> isValidDiscount(order, dateDiscount))
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    private int sumAmountOfDateDiscount() {
+    private boolean isValidDiscount(Order order, DateDiscount dateDiscount) {
+        return isValidOrderedAmount(order) && hasDiscountAmount(dateDiscount);
+    }
+
+    private boolean isValidOrderedAmount(Order order) {
+        return order.isOverMinAmount();
+    }
+
+    private boolean hasDiscountAmount(DateDiscount dateDiscount) {
+        return dateDiscount.getPrice() != 0;
+    }
+
+    private int sumDateDiscountAmount() {
         return this.dateDiscounts.stream()
                 .mapToInt(DateDiscount::getPrice)
                 .sum();
