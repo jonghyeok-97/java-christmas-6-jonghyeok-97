@@ -1,5 +1,7 @@
 package christmas.model;
 
+import static christmas.Constants.ZERO;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +17,6 @@ public class Order {
     private static final String ORDER_DELIMETER = ",";
     private static final String MENU_DELIMETER = "-";
     private static final int NOT_EXIST_LOCATION = -1;
-    private static final int NOT_COUNT = 0;
     private static final int MAX_COUNT = 20;
     private static final int MIN_TOTAL_AMOUNT_FOR_DISCOUNT = 10000;
     private static final int MIN_TOTAL_AMOUNT_FOR_GIFT = 120000;
@@ -172,7 +173,7 @@ public class Order {
     }
 
     private void validateExist(int count) {
-        if (count <= NOT_COUNT) {
+        if (count <= ZERO) {
             throw new IllegalArgumentException(ERROR_RETRY_ORDER);
         }
     }

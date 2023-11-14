@@ -1,5 +1,8 @@
 package christmas;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import christmas.model.MenuBoard;
 import christmas.model.Order;
 import java.util.HashMap;
@@ -8,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,51 +19,69 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class OrderTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {",고기-3,닭-1,파스타-3", "고기-3,,파스타2", "고기-2,파스타-1,", "고기-2, ,파스타-3"})
-    @DisplayName("구분자(,) 사이에 값이 없거나 구분자가 끝에오면 오류 발생하는 테스트")
-    void create_Order(String input) {
-        Assertions.assertThatThrownBy(() -> new Order(input))
+    @DisplayName("주문을 주문 구분자(,) 로 나눴을 때, 값이 없거나 주문 구분자가 끝에오면 오류 발생하는 테스트")
+    @ValueSource(strings = {",바비큐립-3,제로콜라-1", "바비큐립-3,,제로콜라-2", "바비큐립-2,제로콜라-1,", "바비큐립-2, ,샴페인-3"})
+    void validate_ORDER_DELIMTER(String invalidInput) {
+        assertThatThrownBy(() -> new Order(invalidInput))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"고기- 3,닭-1,파스타-3", "-3,파스타-2", "고기2,파스타-1", "고기-,파스타-2"})
-    @DisplayName("구분자(-) 로 분리한 값이 올바르지 않으면 오류 발생하는 테스트")
-    void create_Order2(String input) {
-        Assertions.assertThatThrownBy(() -> new Order(input))
+    @DisplayName("주문 한개를 메뉴 구분자(-)로 분리했을 때, 메누와 값이 올바른지 테스트")
+    @ValueSource(strings = {"바비큐립- 3,제로콜라-1", "-3,제로콜라-2", "바비큐립2", "바비큐립-,제로콜라-2",
+            "바비큐립---3", "-,바비큐립-2", "바비큐립-2-", "바비큐립-@", "3-1,파스타-2"})
+    void validate_MENU_DELEMETER(String invalidInput) {
+        assertThatThrownBy(() -> new Order(invalidInput))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
+    @DisplayName("주문한 메뉴의 개수가 0개 이하면 예외 테스트")
+    @ValueSource(strings = {"바비큐립-0,제로콜라-1", "바비큐립-3,제로콜라-(-1)", "바비큐립-0"})
+    void validate_Count_Of_Menu(String invalidInput) {
+        assertThatThrownBy(() -> new Order(invalidInput))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @DisplayName("주문한 메뉴의 총 개수가 21개 이상이면 예외 테스트")
     @ValueSource(strings = {"고기-20,파스타-1", "고기-3,파스타-0", "고기-20,파스타-0"})
-    @DisplayName("메뉴 개수가 21개 이상이거나 주문메뉴개수가 0개면 예외 테스트")
-    void create_Order3(String input) {
-        Assertions.assertThatThrownBy(() -> new Order(input))
+    void validate_Oer_Max_Count(String invalidInput) {
+        assertThatThrownBy(() -> new Order(invalidInput))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"양송이수프-1,제로콜라-3,양송이수프-5", "제로콜라-3,해산물파스타-3,제로콜라-1"})
+    @DisplayName("주문한 메뉴가 메뉴판에 없으면 예외 테스트")
+    @ValueSource(strings = {"고기-1,제로콜라-1", "바비큐립-3,사이다-3", "바비큐립-10,타파스-1,스테이크-2"})
+    void validate_Exist_On_MenuBoard(String invalidInput) {
+        assertThatThrownBy(() -> new Order(invalidInput))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
     @DisplayName("메뉴가 중복되면 예외 발생하는 테스트")
-    void not_menu_in_MenuBoard(String menu) {
-        Assertions.assertThatThrownBy(() -> new Order(menu))
+    @ValueSource(strings = {"양송이수프-1,제로콜라-3,양송이수프-5", "제로콜라-3,해산물파스타-3,제로콜라-1"})
+    void validate_Duplicated_Menu(String invalidMenu) {
+        assertThatThrownBy(() -> new Order(invalidMenu))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"제로콜라-3,레드와인-1", "샴페인-3"})
     @DisplayName("음료만 주문하면 예외 발생하는 테스트")
-    void only_Beverage_in_Order(String menu) {
-
-        Assertions.assertThatThrownBy(() -> new Order(menu))
+    @ValueSource(strings = {"제로콜라-3,레드와인-1", "샴페인-3"})
+    void validate_Only_Beverage(String invalidMenu) {
+        assertThatThrownBy(() -> new Order(invalidMenu))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000", "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1:142000"}, delimiter = ':')
     @DisplayName("주문한 메뉴에 따라 총 주문금액이 잘 합산되는지 테스트")
-    void check_totalPrice(String menus, int totalPrice) {
-        Assertions.assertThat(new Order(menus).getTotalPrice()).isEqualTo(totalPrice);
+    @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000", "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1:142000"}, delimiter = ':')
+    void check_totalAmount(String menus, int totalAmount) {
+        int actual = new Order(menus).getTotalAmount();
+        int expected = totalAmount;
+        assertThat(actual).isEqualTo(totalAmount);
     }
 
     @ParameterizedTest
@@ -81,33 +101,8 @@ public class OrderTest {
                 .sorted()
                 .collect(Collectors.toList());
 
-        Assertions.assertThat(actualMenus).isEqualTo(expectedMenus);
-        Assertions.assertThat(actualCounts).isEqualTo(expectedCounts);
-    }
-
-    @ParameterizedTest
-    @DisplayName("메뉴타입에 따라 메뉴가격이 잘 합산되는지 테스트")
-    @CsvSource(value = {"양송이수프-1,타파스-2,시저샐러드-1:APPETIZER:25000", "티본스테이크-1,해산물파스타-1,제로콜라-3:MAIN:90000",
-            "초코케이크-2,아이스크림-1,레드와인-2,바비큐립-1:DESSERT:35000"}, delimiter = ':')
-    void check_priceByOrderedType(String inputMenu, MenuBoard MENUTYPE, int totalPriceByType) {
-        Map<MenuBoard, Integer> priceByOrderedType = new HashMap<>();
-        List<String> orderedMenus = Stream.of(inputMenu.split(","))
-                .collect(Collectors.toList());
-        for (String orderedMenu : orderedMenus) {
-            int dashIndex = orderedMenu.indexOf("-");
-            String menu = orderedMenu.substring(0, dashIndex);
-            int countMenu = Integer.parseInt(orderedMenu.substring(dashIndex + 1));
-
-            MenuBoard menuType = MenuBoard.findType(menu);
-            int menuPrice = MenuBoard.getPrice(menu);
-
-            priceByOrderedType.put(menuType, priceByOrderedType.getOrDefault(menuType, 0) + menuPrice * countMenu);
-        }
-
-        int actual = priceByOrderedType.get(MENUTYPE);
-        int expected = totalPriceByType;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actualMenus).isEqualTo(expectedMenus);
+        assertThat(actualCounts).isEqualTo(expectedCounts);
     }
 
     @ParameterizedTest
@@ -119,19 +114,7 @@ public class OrderTest {
         int actual = order.countDessertMenu();
         int expected = countingDessertMenu;
 
-        Assertions.assertThat(actual).isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @DisplayName("총주문금액이 만원을 넘지 않으면 false를 반환하는 테스트")
-    @ValueSource(strings = {"양송이수프-1", "타파스-1,제로콜라-1", "아이스크림-1"})
-    void isOverMinOrderedPriceForDiscount(String menus) {
-        Order order = new Order(menus);
-
-        boolean actual = order.isOverMinDiscountPrice();
-        boolean expected = false;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -143,6 +126,30 @@ public class OrderTest {
         int actual = order.countMainMenu();
         int expected = countingMainMenu;
 
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @DisplayName("총주문금액이 만원을 넘지 않으면 false를 반환하는 테스트")
+    @ValueSource(strings = {"양송이수프-1", "타파스-1,제로콜라-1", "아이스크림-1"})
+    void check_MIN_TOTAL_AMOUNT_FOR_DISCOUNT(String menus) {
+        Order order = new Order(menus);
+
+        boolean actual = order.isOverMinAmount();
+        boolean expected = false;
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @DisplayName("총주문금액이 12만원을 넘으면 true를 반환하는 테스트")
+    @ValueSource(strings = {"양송이수프-1,티본스테이크-3", "타파스-1,샴페인-5", "티본스테이크-1,바비큐립-2"})
+    void check_MIN_TOTAL_AMOUNT_FOR_GIFT(String menus) {
+        Order order = new Order(menus);
+
+        boolean actual = order.isOverMinGiftAmount();
+        boolean expected = true;
+
+        assertThat(actual).isEqualTo(expected);
     }
 }
