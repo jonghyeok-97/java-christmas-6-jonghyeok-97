@@ -1,14 +1,16 @@
 package christmas.model;
 
+import static christmas.Constants.ZERO;
+
 public class GiftEvent {
-    private boolean isFree;
-    private int amount;
+    private static final int GIFT_AMOUNT = 25000;
+
+    private final boolean isFree;
+    private final int amount;
 
     public GiftEvent(Order order) {
-        if (order.isOverMinPresentPrice()) {
-            this.isFree = true;
-            this.amount = 25000;
-        }
+        this.isFree = setFree(order);
+        this.amount = setAmount(order);
     }
 
     public boolean getFree() {
@@ -17,5 +19,16 @@ public class GiftEvent {
 
     public int getAmount() {
         return amount;
+    }
+
+    private boolean setFree(Order order) {
+        return order.isOverMinGiftAmount();
+    }
+
+    private int setAmount(Order order) {
+        if (order.isOverMinGiftAmount()) {
+            return GIFT_AMOUNT;
+        }
+        return ZERO;
     }
 }
