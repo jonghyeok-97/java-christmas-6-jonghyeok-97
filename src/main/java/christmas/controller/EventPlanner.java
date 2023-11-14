@@ -24,30 +24,10 @@ public class EventPlanner {
         outputView.printWelcomeMessage();
         VisitDate visitDate = createVisitDate();
         Order order = createOrder();
-
-        outputView.printPreviewMessage(visitDate);
-        outputView.printMenuAndCount(order);
-
-        GiftEvent presentDiscount = new GiftEvent(order);
-
-//        NormalDiscount normalDiscount = new NormalDiscount(visitDate, order);
-//        WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
-//        WeekendDiscount weekendDiscount = new WeekendDiscount(visitDate, order);
-//        SpecialDiscount specialDiscount = new SpecialDiscount(visitDate, order);
-//        Benefits payment = new Benefits(order, presentDiscount, normalDiscount, weekdaysDiscount, weekendDiscount, specialDiscount);
-        Benefits payment = new Benefits(order, presentDiscount, new NormalDiscount(visitDate, order),
-                new WeekdaysDiscount(visitDate, order)
-                , new WeekendDiscount(visitDate, order), new SpecialDiscount(visitDate, order));
-        outputView.printTotalAmountBeforeDiscount(order);
-        outputView.printPresent(presentDiscount);
-        // 혜택 내역
-        outputView.printDiscounts(payment, presentDiscount);
-        //총혜택금액
-        outputView.printTotalDiscounts(payment, presentDiscount);
-        // 할인후예상결제금액
-        outputView.printExpectedPriceByOrder(order, payment, presentDiscount);
-        // 배지
-        outputView.printBadge(payment, presentDiscount);
+        printOrderDetails(visitDate, order);
+        GiftEvent gift = new GiftEvent(order);
+        Benefits benefit = createBenefits(visitDate, order);
+        printOrderResultByDiscount(benefit, order, gift);
     }
     private VisitDate createVisitDate () {
         try {
@@ -65,5 +45,24 @@ public class EventPlanner {
             outputView.printError(error.getMessage());
             return createOrder();
         }
+    }
+
+    private void printOrderDetails(VisitDate visitDate, Order order) {
+        outputView.printPreviewMessage(visitDate);
+        outputView.printMenuAndCount(order);
+    }
+
+    private Benefits createBenefits(VisitDate visitDate, Order order) {
+        return new Benefits(order, new NormalDiscount(visitDate), new WeekdaysDiscount(visitDate, order),
+                new WeekendDiscount(visitDate, order), new SpecialDiscount(visitDate));
+    }
+
+    private void printOrderResultByDiscount(Benefits benefit, Order order, GiftEvent gift) {
+        outputView.printTotalAmountBeforeDiscount(order);
+        outputView.printPresent(gift);
+        outputView.printBenefits(benefit, gift);
+        outputView.printTotalDiscounts(benefit, gift);
+        outputView.printExpectedPriceByOrder(order, benefit);
+        outputView.printBadge(benefit, gift);
     }
 }
