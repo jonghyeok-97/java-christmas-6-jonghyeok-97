@@ -41,15 +41,15 @@ public enum December {
                 .anyMatch(week -> week.discountDates.contains(visitDate));
     }
 
-    public static String getDiscountTypeMessage(December december) {
-        return december.message;
-    }
-
     public static String findMessageByType(December december) {
         return Stream.of(December.values())
                 .filter(type -> type.equals(december))
                 .map(December::getDiscountTypeMessage)
                 .findAny()
                 .orElse(NONE.message);
+    }
+
+    private static String getDiscountTypeMessage(December december) {
+        return december.message;
     }
 }

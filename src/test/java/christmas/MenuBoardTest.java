@@ -47,6 +47,7 @@ public class MenuBoardTest {
     void getPrice_by_menu(String menu, int price) {
         int actual = MenuBoard.getPrice(menu);
         int expected = price;
+
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 }
