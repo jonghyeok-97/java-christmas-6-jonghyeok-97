@@ -3,7 +3,7 @@ package christmas.view;
 import static christmas.Constants.ZERO;
 import static christmas.view.OutputViewMessage.AMOUNT;
 import static christmas.view.OutputViewMessage.AMOUNT_DISCOUNT;
-import static christmas.view.OutputViewMessage.AMOUNT_PER_BENEFIT;
+import static christmas.view.OutputViewMessage.AMOUNT_PER_DATE_DISCOUNT;
 import static christmas.view.OutputViewMessage.BADGE_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.BADGE_SANTA;
 import static christmas.view.OutputViewMessage.BADGE_STAR;
@@ -74,7 +74,7 @@ public class OutputView {
         newLine();
         System.out.println(BENEFITS_HISTORY_GUIDE_MESSAGE);
         Map<String, Integer> amountByDateDiscounts = benefit.findHistory();
-        if (amountByDateDiscounts.isEmpty() && !gift.getFree()) {
+        if (hasNoneBenefits(amountByDateDiscounts, gift)) {
             System.out.println(NOTHING);
             return;
         }
@@ -82,11 +82,15 @@ public class OutputView {
         printGiftBenefit(gift);
     }
 
+    private boolean hasNoneBenefits(Map<String, Integer> amountByDateDiscounts, GiftEvent gift) {
+        return amountByDateDiscounts.isEmpty() && !gift.getFree();
+    }
+
     private void printAmountByDateDiscounts(Map<String, Integer> amountByDateDiscounts) {
         amountByDateDiscounts.entrySet().stream()
                 .filter(amountByDateDiscount -> hasAmount(amountByDateDiscount.getValue()))
                 .forEach(amountByDateDiscount -> {
-                    System.out.printf(AMOUNT_PER_BENEFIT,
+                    System.out.printf(AMOUNT_PER_DATE_DISCOUNT,
                             amountByDateDiscount.getKey(), decimalFormat.format(amountByDateDiscount.getValue()));
                 });
     }
