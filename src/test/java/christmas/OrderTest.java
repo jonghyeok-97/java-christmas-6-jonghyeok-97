@@ -22,6 +22,7 @@ public class OrderTest {
     void set() {
         orderGenerator = new OrderGenerator();
     }
+
     @ParameterizedTest
     @DisplayName("주문한 메뉴에 따라 총 주문금액이 잘 합산되는지 테스트")
     @CsvSource(value = {"바비큐립-2,양송이수프-1:114000", "티본스테이크-1,초코케이크-1,제로콜라-2:76000",
