@@ -15,6 +15,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class BenefitsTest {
@@ -28,10 +29,10 @@ public class BenefitsTest {
     }
 
     @ParameterizedTest
-    @DisplayName("총주문금액이 최소금액을 넘지 않으면 할인혜택들이 적용 안되어야 하는 테스트")
-    @ValueSource(strings = {"아이스크림-1", "양송이수프-1,제로콜라-1", "타파스-1"})
-    void underMinOrderedAmount(String menu) {
-        VisitDate visitDate = visitDateGenerator.createDate("3");
+    @DisplayName("총주문금액이 최소금액을 넘지 않으면 날짜마다 모든 할인혜택들이 적용 안되어야 하는 테스트")
+    @CsvSource(value = {"3,아이스크림-1", "15,양송이수프-1,제로콜라-1", "25,타파스-1"})
+    void underMinOrderedAmount(String date, String menu) {
+        VisitDate visitDate = visitDateGenerator.createDate(date);
         Order order = orderGenerator.createCountByOrdereMenu(menu);
         Benefits benefit = new Benefits(order, new NormalDiscount(visitDate),
                 new WeekendDiscount(visitDate, order), new WeekdaysDiscount(visitDate, order),
