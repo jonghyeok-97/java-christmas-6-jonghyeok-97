@@ -1,7 +1,7 @@
 package christmas;
 
 import christmas.model.MenuBoard;
-import christmas.model.Order;
+import christmas.model.OrderGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,9 +12,11 @@ public class MenuBoardTest {
 
     @ParameterizedTest
     @DisplayName("입력값의 메뉴가 메뉴판에 없다면 예외 발생하는 테스트")
-    @ValueSource(strings = {"양송이수프-1,밥-3", "제로코라-3,해산물파스타-3"})
+    @ValueSource(strings = {"양송이수프-1,밥-3", "제로코라-3,해산물파스타-3", "폭립-3,바비큐립-4"})
     void contains_MenuBoard(String menu) {
-        Assertions.assertThatThrownBy(() -> new Order(menu))
+        OrderGenerator orderGenerator = new OrderGenerator();
+
+        Assertions.assertThatThrownBy(() -> orderGenerator.createCountByOrdereMenu(menu))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
