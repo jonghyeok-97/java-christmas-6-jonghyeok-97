@@ -16,10 +16,6 @@ public class OrderGeneratorTest {
         orderGenerator = new OrderGenerator();
     }
 
-
-
-
-
         @ParameterizedTest
     @DisplayName("주문한 메뉴의 개수가 0개 이하면 예외 테스트")
     @ValueSource(strings = {"바비큐립-0,제로콜라-1", "바비큐립-3,제로콜라-(-1)", "바비큐립-0"})

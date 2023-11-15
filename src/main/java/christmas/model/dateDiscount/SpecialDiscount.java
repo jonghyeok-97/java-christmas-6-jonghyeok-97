@@ -16,7 +16,7 @@ public class SpecialDiscount extends DateDiscount {
 
     @Override
     public String getDiscountType() {
-        return December.find(December.SPECIAL);
+        return December.findMessageByType(December.SPECIAL);
     }
 
     @Override

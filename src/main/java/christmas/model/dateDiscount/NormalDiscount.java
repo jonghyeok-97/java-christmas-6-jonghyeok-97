@@ -17,7 +17,7 @@ public class NormalDiscount extends DateDiscount {
 
     @Override
     public String getDiscountType() {
-        return December.find(December.NORMAL);
+        return December.findMessageByType(December.NORMAL);
     }
 
     @Override
@@ -32,4 +32,3 @@ public class NormalDiscount extends DateDiscount {
         return ZERO;
     }
 }
-

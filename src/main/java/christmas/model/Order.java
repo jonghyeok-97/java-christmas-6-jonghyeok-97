@@ -10,7 +10,7 @@ public class Order {
     private final Map<String, Integer> countByOrderedMenu;
     private final int totalAmount;
 
-    public Order(Map<String, Integer> countByOrderedMenu) throws IllegalArgumentException {
+    public Order(Map<String, Integer> countByOrderedMenu) {
         this.countByOrderedMenu = countByOrderedMenu;
         this.totalAmount = calculateTotalAmount();
     }
