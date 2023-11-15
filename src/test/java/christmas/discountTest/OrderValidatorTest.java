@@ -55,5 +55,12 @@ public class OrderValidatorTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-
+    @ParameterizedTest
+    @DisplayName("개수가 0보다 작으면 예외 발생하는 테스트")
+    @CsvSource(value = {"바비큐립-0,4", "타파스--1,3", "초코케이크--2,5"})
+    void validate_Exist(String menu, int count) {
+        assertThatThrownBy(() ->
+                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, count)))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
