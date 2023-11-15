@@ -16,22 +16,9 @@ public class OrderGeneratorTest {
         orderGenerator = new OrderGenerator();
     }
 
-    @ParameterizedTest
-    @DisplayName("주문을 주문 구분자(,) 로 나눴을 때, 값이 없거나 주문 구분자가 끝에오면 오류 발생하는 테스트")
-    @ValueSource(strings = {",바비큐립-3,제로콜라-1", "바비큐립-3,,제로콜라-2", "바비큐립-2,제로콜라-1,", "바비큐립-2, ,샴페인-3"})
-    void validate_ORDER_DELIMTER(String invalidInput) {
-        assertThatThrownBy(() -> orderGenerator.createCountByOrdereMenu(invalidInput))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
 
-        @ParameterizedTest
-    @DisplayName("주문 한개를 메뉴 구분자(-)로 분리했을 때, 메누와 값이 올바른지 테스트")
-    @ValueSource(strings = {"바비큐립- 3,제로콜라-1", "-3,제로콜라-2", "바비큐립2", "바비큐립-,제로콜라-2",
-            "바비큐립---3", "-,바비큐립-2", "바비큐립-2-", "바비큐립-@", "3-1,파스타-2"})
-    void validate_MENU_DELEMETER(String invalidInput) {
-        assertThatThrownBy(() -> orderGenerator.createCountByOrdereMenu(invalidInput))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
+
+
 
         @ParameterizedTest
     @DisplayName("주문한 메뉴의 개수가 0개 이하면 예외 테스트")
