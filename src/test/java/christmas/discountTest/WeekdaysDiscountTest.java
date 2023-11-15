@@ -3,6 +3,7 @@ package christmas.discountTest;
 import christmas.model.Order;
 import christmas.model.OrderGenerator;
 import christmas.model.VisitDate;
+import christmas.model.VisitDateGenerator;
 import christmas.model.dateDiscount.WeekdaysDiscount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +13,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class WeekdaysDiscountTest {
     private OrderGenerator orderGenerator;
+    private VisitDateGenerator visitDateGenerator;
 
     @BeforeEach
     void set() {
         orderGenerator = new OrderGenerator();
+        visitDateGenerator = new VisitDateGenerator();
     }
 
     @ParameterizedTest
@@ -25,7 +28,7 @@ public class WeekdaysDiscountTest {
             delimiter = ':')
     void date_Is_Weekdats(String menu, int discountAmount, String date) {
         Order order = orderGenerator.createCountByOrdereMenu(menu);
-        VisitDate visitDate = new VisitDate(date);
+        VisitDate visitDate = visitDateGenerator.createDate(date);
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
 
         int actual = weekdaysDiscount.getAmount();
@@ -40,7 +43,7 @@ public class WeekdaysDiscountTest {
             delimiter = ':')
     void count_DESSERT_menu(String menu, int discountAmount, String date) {
         Order order = orderGenerator.createCountByOrdereMenu(menu);
-        VisitDate visitDate = new VisitDate(date);
+        VisitDate visitDate = visitDateGenerator.createDate(date);
         WeekdaysDiscount weekdaysDiscount = new WeekdaysDiscount(visitDate, order);
 
         int actual = weekdaysDiscount.getAmount();
