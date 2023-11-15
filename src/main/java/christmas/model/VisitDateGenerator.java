@@ -7,7 +7,7 @@ public class VisitDateGenerator {
         this.visitDateValidator = new VisitDateValidator();
     }
 
-    public VisitDate createDate(String input) {
+    public VisitDate createDate(String input) throws IllegalArgumentException {
         visitDateValidator.validateDate(input);
         return new VisitDate(Integer.parseInt(input));
     }
