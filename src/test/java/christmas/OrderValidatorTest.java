@@ -1,4 +1,4 @@
-package christmas.discountTest;
+package christmas;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
