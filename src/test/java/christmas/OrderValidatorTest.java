@@ -29,7 +29,7 @@ public class OrderValidatorTest {
     }
 
     @ParameterizedTest
-    @DisplayName("구분자(-)의 위치를 못찾으면 예외 발생하는 테스트")
+    @DisplayName("메뉴구분자(-)의 위치를 못찾으면 예외 발생하는 테스트")
     @ValueSource(strings = {"해산물파스타3,", "바비큐립1", "타파스19"})
     void validate_Location_Of_MENU_DELIMETER(String menu) {
         assertThatThrownBy(() -> orderValidator.validateFound(orderCalculator.findLocationOfMenuDelimeter(menu)))
@@ -48,18 +48,18 @@ public class OrderValidatorTest {
     @ParameterizedTest
     @DisplayName("개수가 숫자가 아니면 예외 발생하는 테스트")
     @CsvSource(value = {"바비큐립-a,4", "타파스-!,3", "초코케이크-a,5", "타파스-,3", "제로콜라- ,4"})
-    void validate_Count_Is_Number(String menu, int count) {
+    void validate_Count_Is_Number(String menu, int locationOfMenuDelimter) {
         assertThatThrownBy(() ->
-                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, count)))
+                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, locationOfMenuDelimter)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
     @DisplayName("개수가 0보다 작으면 예외 발생하는 테스트")
     @CsvSource(value = {"바비큐립-0,4", "타파스--1,3", "초코케이크--2,5"})
-    void validate_Exist(String menu, int count) {
+    void validate_Exist(String menu, int locationOfMenuDelimeter) {
         assertThatThrownBy(() ->
-                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, count)))
+                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, locationOfMenuDelimeter)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

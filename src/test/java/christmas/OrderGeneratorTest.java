@@ -16,7 +16,7 @@ public class OrderGeneratorTest {
         orderGenerator = new OrderGenerator();
     }
 
-        @ParameterizedTest
+    @ParameterizedTest
     @DisplayName("주문한 메뉴의 개수가 0개 이하면 예외 테스트")
     @ValueSource(strings = {"바비큐립-0,제로콜라-1", "바비큐립-3,제로콜라-(-1)", "바비큐립-0"})
     void validate_Count_Of_Menu(String invalidInput) {
@@ -24,7 +24,7 @@ public class OrderGeneratorTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-        @ParameterizedTest
+    @ParameterizedTest
     @DisplayName("주문한 메뉴의 총 개수가 21개 이상이면 예외 테스트")
     @ValueSource(strings = {"고기-20,파스타-1", "고기-3,파스타-0", "고기-20,파스타-0"})
     void validate_Oer_Max_Count(String invalidInput) {
