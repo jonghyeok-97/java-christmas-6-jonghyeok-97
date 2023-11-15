@@ -37,4 +37,15 @@ public class OrderCalculatorTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
+    @ParameterizedTest
+    @DisplayName("메뉴만을 추출하는 테스트")
+    @CsvSource(value = {"바비큐립-3,4,바비큐립", "크리스마스파스타-3,8,크리스마스파스타", "초코케이크-10,5,초코케이크"})
+    void extract_Menu(String menuWithMenuDelimeter, int location, String menu) {
+        String actual = orderCalculator.extractMenu(menuWithMenuDelimeter, location);
+        String expected = menu;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+
 }
