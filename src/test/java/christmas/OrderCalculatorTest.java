@@ -1,8 +1,9 @@
 package christmas;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import christmas.model.OrderCalculator;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +25,7 @@ public class OrderCalculatorTest {
         List<String> actual = orderCalculator.splitWithOrderDelimeter(menu);
         List<String> expected = List.of(menu.split(","));
 
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -34,7 +35,7 @@ public class OrderCalculatorTest {
         int actual = orderCalculator.findLocationOfMenuDelimeter(menu);
         int expected = location;
 
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -44,8 +45,16 @@ public class OrderCalculatorTest {
         String actual = orderCalculator.extractMenu(menuWithMenuDelimeter, location);
         String expected = menu;
 
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
+    @ParameterizedTest
+    @DisplayName("메뉴의 개수만을 추출하는 테스트")
+    @CsvSource(value = {"바비큐립-3,4,3", "크리스마스파스타-3,8,3", "초코케이크-10,5,10"})
+    void extract_Count(String menuWithMenuDelimeter, int location, String count) {
+        String actual = orderCalculator.extractCount(menuWithMenuDelimeter, location);
+        String expected = count;
 
+        assertThat(actual).isEqualTo(expected);
+    }
 }
