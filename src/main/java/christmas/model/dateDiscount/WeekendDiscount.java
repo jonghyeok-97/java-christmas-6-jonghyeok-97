@@ -17,7 +17,7 @@ public class WeekendDiscount extends DateDiscount{
 
     @Override
     public String getDiscountType() {
-        return December.find(December.WEEKEND);
+        return December.findMessageByType(December.WEEKEND);
     }
 
     @Override

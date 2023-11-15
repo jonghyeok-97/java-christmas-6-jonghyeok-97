@@ -19,7 +19,7 @@ public class WeekdaysDiscountTest {
     }
 
     @ParameterizedTest
-    @DisplayName("평일이 아니면 평일 할인이 적용 안되는 테스트")
+    @DisplayName("평일이 아니면 평일 할인도 없는지 테스트")
     @CsvSource(value = {"바비큐립-2,샴페인-1,초코케이크-2:4046:3", "아이스크림-2,초코케이크-1:6069:13",
             "샴페인-2,초코케이크-1:0:1", "바비큐립-2,샴페인-1,초코케이크-2:0:30"},
             delimiter = ':')
@@ -35,7 +35,7 @@ public class WeekdaysDiscountTest {
     }
 
     @ParameterizedTest
-    @DisplayName("디저트개수가 없으면 할인이 적용 안되는 테스트")
+    @DisplayName("평일이어도 디저트개수가 없으면 할인도 없는지 테스트")
     @CsvSource(value = {"바비큐립-2,샴페인-1,초코케이크-2:4046:3", "아이스크림-2,초코케이크-1:6069:13", "샴페인-2,타파스-1:0:28"},
             delimiter = ':')
     void count_DESSERT_menu(String menu, int discountAmount, String date) {
