@@ -5,24 +5,24 @@ import static christmas.view.OutputViewMessage.AMOUNT;
 import static christmas.view.OutputViewMessage.AMOUNT_DISCOUNT;
 import static christmas.view.OutputViewMessage.AMOUNT_PER_BENEFIT;
 import static christmas.view.OutputViewMessage.AMOUNT_RESULT;
-import static christmas.view.OutputViewMessage.BADGE;
+import static christmas.view.OutputViewMessage.BADGE_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.BADGE_SANTA;
 import static christmas.view.OutputViewMessage.BADGE_STAR;
 import static christmas.view.OutputViewMessage.BADGE_TREE;
-import static christmas.view.OutputViewMessage.BENEFITS_HISTORY;
-import static christmas.view.OutputViewMessage.EXPECTED_AMOUNT_AFTER_BENEFIT;
+import static christmas.view.OutputViewMessage.BENEFITS_HISTORY_GUIDE_MESSAGE;
+import static christmas.view.OutputViewMessage.EXPECTED_AMOUNT_AFTER_BENEFIT_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.GIFT_BENEFIT;
-import static christmas.view.OutputViewMessage.GIFT_MENU;
+import static christmas.view.OutputViewMessage.GIFT_MENU_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.MENU_AND_COUNT;
 import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_SANTA;
 import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_STAR;
 import static christmas.view.OutputViewMessage.MIN_AMOUNT_OF_TREE;
 import static christmas.view.OutputViewMessage.NOTHING;
 import static christmas.view.OutputViewMessage.ONE_GIFT;
-import static christmas.view.OutputViewMessage.ORDERED_MENU;
-import static christmas.view.OutputViewMessage.PREVIEW_GUIDE;
-import static christmas.view.OutputViewMessage.TOTAL_AMOUNT_BEFORE_DISCOUNT;
-import static christmas.view.OutputViewMessage.TOTAL_BENEFIT_AMOUNT;
+import static christmas.view.OutputViewMessage.ORDERED_MENU_GUIDE_MESSAGE;
+import static christmas.view.OutputViewMessage.PREVIEW_GUIDE_MESSAGE;
+import static christmas.view.OutputViewMessage.TOTAL_AMOUNT_BEFORE_DISCOUNT_GUIDE_MESSAGE;
+import static christmas.view.OutputViewMessage.TOTAL_BENEFIT_AMOUNT_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.WELCOME;
 
 import christmas.model.Order;
@@ -45,25 +45,25 @@ public class OutputView {
     }
 
     public void printPreviewMessage(VisitDate visitDate) {
-        System.out.printf(PREVIEW_GUIDE, visitDate.getDate());
+        System.out.printf(PREVIEW_GUIDE_MESSAGE, visitDate.getDate());
         newLine();
     }
 
     public void printMenuAndCount(Order order) {
-        System.out.println(ORDERED_MENU);
+        System.out.println(ORDERED_MENU_GUIDE_MESSAGE);
         order.getCountByOrderedMenu().forEach(
                 (menu, count) -> System.out.printf(MENU_AND_COUNT, menu, count));
     }
 
     public void printTotalAmountBeforeDiscount(Order order) {
         newLine();
-        System.out.println(TOTAL_AMOUNT_BEFORE_DISCOUNT);
+        System.out.println(TOTAL_AMOUNT_BEFORE_DISCOUNT_GUIDE_MESSAGE);
         System.out.printf(AMOUNT, decimalFormat.format(order.getTotalAmount()));
     }
 
     public void printPresent(GiftEvent gift) {
         newLine();
-        System.out.println(GIFT_MENU);
+        System.out.println(GIFT_MENU_GUIDE_MESSAGE);
         if (!gift.getFree()) {
             System.out.println(NOTHING);
             return;
@@ -73,7 +73,7 @@ public class OutputView {
 
     public void printBenefits(Benefits benefit, GiftEvent gift) {
         newLine();
-        System.out.println(BENEFITS_HISTORY);
+        System.out.println(BENEFITS_HISTORY_GUIDE_MESSAGE);
         printAmountByBenefit(benefit.findHistory());
         printGiftBenefit(gift);
     }
@@ -103,7 +103,7 @@ public class OutputView {
 
     public void printTotalDiscounts(Benefits benefit, GiftEvent gift) {
         newLine();
-        System.out.println(TOTAL_BENEFIT_AMOUNT);
+        System.out.println(TOTAL_BENEFIT_AMOUNT_GUIDE_MESSAGE);
         int totalDiscounts = benefit.getDateDiscountAmount() + gift.getAmount();
         if (totalDiscounts == ZERO) {
             System.out.printf(AMOUNT, ZERO);
@@ -114,7 +114,7 @@ public class OutputView {
 
     public void printExpectedPriceByOrder(Order order, Benefits benefit) {
         newLine();
-        System.out.println(EXPECTED_AMOUNT_AFTER_BENEFIT);
+        System.out.println(EXPECTED_AMOUNT_AFTER_BENEFIT_GUIDE_MESSAGE);
         int expectedAmount = order.getTotalAmount() - benefit.getDateDiscountAmount();
         System.out.printf(AMOUNT_RESULT, decimalFormat.format(expectedAmount));
 
@@ -124,7 +124,7 @@ public class OutputView {
 
     public void printBadge(Benefits benefit, GiftEvent gift) {
         newLine();
-        System.out.println(BADGE);
+        System.out.println(BADGE_GUIDE_MESSAGE);
         int totalDiscountAmount = benefit.getDateDiscountAmount() + gift.getAmount();
         printBadgeOf(totalDiscountAmount);
     }
@@ -138,8 +138,7 @@ public class OutputView {
         }
         else if (totalDiscountAmount < MIN_AMOUNT_OF_SANTA) {
             System.out.print(BADGE_TREE);
-        }
-        else {
+        } else if (totalDiscountAmount >= MIN_AMOUNT_OF_SANTA) {
             System.out.print(BADGE_SANTA);
         }
     }
