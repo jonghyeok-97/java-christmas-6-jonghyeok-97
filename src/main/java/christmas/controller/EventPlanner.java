@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.model.VisitDateGenerator;
 import christmas.model.Order;
 import christmas.model.Benefits;
 import christmas.model.GiftEvent;
@@ -32,7 +33,9 @@ public class EventPlanner {
     }
     private VisitDate createVisitDate() {
         try {
-            return new VisitDate(inputView.readDate());
+            VisitDateGenerator visitDateGenerator = new VisitDateGenerator();
+            VisitDate visitDate = visitDateGenerator.createDate(inputView.readDate());
+            return visitDate;
         } catch (IllegalArgumentException error) {
             outputView.printError(error.getMessage());
             return createVisitDate();
