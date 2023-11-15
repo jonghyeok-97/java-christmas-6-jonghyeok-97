@@ -4,7 +4,6 @@ import static christmas.Constants.ZERO;
 import static christmas.view.OutputViewMessage.AMOUNT;
 import static christmas.view.OutputViewMessage.AMOUNT_DISCOUNT;
 import static christmas.view.OutputViewMessage.AMOUNT_PER_BENEFIT;
-import static christmas.view.OutputViewMessage.AMOUNT_RESULT;
 import static christmas.view.OutputViewMessage.BADGE_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.BADGE_SANTA;
 import static christmas.view.OutputViewMessage.BADGE_STAR;
@@ -23,7 +22,7 @@ import static christmas.view.OutputViewMessage.ORDERED_MENU_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.PREVIEW_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.TOTAL_AMOUNT_BEFORE_DISCOUNT_GUIDE_MESSAGE;
 import static christmas.view.OutputViewMessage.TOTAL_BENEFIT_AMOUNT_GUIDE_MESSAGE;
-import static christmas.view.OutputViewMessage.WELCOME;
+import static christmas.view.OutputViewMessage.WELCOME_GUIDE_MESSAGE;
 
 import christmas.model.Order;
 import christmas.model.Benefits;
@@ -41,7 +40,7 @@ public class OutputView {
     private int countParticipatedCustomer;
 
     public void printWelcomeMessage() {
-        System.out.println(WELCOME);
+        System.out.println(WELCOME_GUIDE_MESSAGE);
     }
 
     public void printPreviewMessage(VisitDate visitDate) {
@@ -74,20 +73,21 @@ public class OutputView {
     public void printBenefits(Benefits benefit, GiftEvent gift) {
         newLine();
         System.out.println(BENEFITS_HISTORY_GUIDE_MESSAGE);
-        printAmountByBenefit(benefit.findHistory());
-        printGiftBenefit(gift);
-    }
-
-    private void printAmountByBenefit(Map<String, Integer> amountByBenefit) {
-        if (amountByBenefit.isEmpty()) {
+        Map<String, Integer> amountByDateDiscounts = benefit.findHistory();
+        if (amountByDateDiscounts.isEmpty() && !gift.getFree()) {
             System.out.println(NOTHING);
             return;
         }
-        amountByBenefit.entrySet().stream()
-                .filter(amount -> hasAmount(amount.getValue()))
-                .forEach(discountType -> {
+        printAmountByDateDiscounts(amountByDateDiscounts);
+        printGiftBenefit(gift);
+    }
+
+    private void printAmountByDateDiscounts(Map<String, Integer> amountByDateDiscounts) {
+        amountByDateDiscounts.entrySet().stream()
+                .filter(amountByDateDiscount -> hasAmount(amountByDateDiscount.getValue()))
+                .forEach(amountByDateDiscount -> {
                     System.out.printf(AMOUNT_PER_BENEFIT,
-                            discountType.getKey(), decimalFormat.format(discountType.getValue()));
+                            amountByDateDiscount.getKey(), decimalFormat.format(amountByDateDiscount.getValue()));
                 });
     }
 
@@ -116,7 +116,7 @@ public class OutputView {
         newLine();
         System.out.println(EXPECTED_AMOUNT_AFTER_BENEFIT_GUIDE_MESSAGE);
         int expectedAmount = order.getTotalAmount() - benefit.getDateDiscountAmount();
-        System.out.printf(AMOUNT_RESULT, decimalFormat.format(expectedAmount));
+        System.out.printf(AMOUNT, decimalFormat.format(expectedAmount));
 
         expectedPriceOfDecember += expectedAmount;
         countParticipatedCustomer++;
