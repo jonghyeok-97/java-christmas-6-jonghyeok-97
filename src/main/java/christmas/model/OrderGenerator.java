@@ -23,10 +23,14 @@ public class OrderGenerator {
         for (String menuWithDelimeter : menusWithMenuDelimeter) {
             int locationOfMenuDelimeter = orderCalculator.findLocationOfMenuDelimeter(menuWithDelimeter);
             String menu = orderCalculator.extractMenu(menuWithDelimeter, locationOfMenuDelimeter);
-            int count = orderCalculator.extractCount(menuWithDelimeter, locationOfMenuDelimeter);
+            int count = toInt(orderCalculator.extractCount(menuWithDelimeter, locationOfMenuDelimeter));
             countByOrderedMenu.put(menu, count);
         }
         orderValidator.validateMenu(menusWithMenuDelimeter.size(), countByOrderedMenu);
         return new Order(countByOrderedMenu);
+    }
+
+    private int toInt(String number) {
+        return Integer.parseInt(number);
     }
 }

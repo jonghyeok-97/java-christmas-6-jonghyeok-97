@@ -55,10 +55,14 @@ public class OrderValidator {
         }
     }
 
-    public void validateExist(int count) {
-        if (count <= ZERO) {
+    public void validateExist(String extractedCount) {
+        if (isUnderZero(extractedCount)) {
             throw new IllegalArgumentException(ERROR_RETRY_ORDER);
         }
+    }
+
+    private boolean isUnderZero(String extractedCount) {
+        return Integer.parseInt(extractedCount) <= ZERO;
     }
 
     public void validateMenu(int sizeOfOrder, Map<String, Integer> countByOrderedMenu) {

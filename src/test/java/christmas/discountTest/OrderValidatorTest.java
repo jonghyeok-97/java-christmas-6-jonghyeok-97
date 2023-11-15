@@ -2,19 +2,23 @@ package christmas.discountTest;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import christmas.model.OrderGenerator;
+import christmas.model.OrderCalculator;
 import christmas.model.OrderValidator;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class OrderValidatorTest {
     private OrderValidator orderValidator;
+    private OrderCalculator orderCalculator;
 
     @BeforeEach
     void set() {
         orderValidator = new OrderValidator();
+        orderCalculator = new OrderCalculator();
     }
 
     @ParameterizedTest
@@ -27,11 +31,27 @@ public class OrderValidatorTest {
 
     @ParameterizedTest
     @DisplayName("구분자(-)의 위치를 못찾으면 예외 발생하는 테스트")
-    @ValueSource(strings = {"해산물파스타3", "바비큐립1", "타파스3"})
+    @ValueSource(strings = {"해산물파스타3,", "바비큐립1", "타파스19"})
     void validate_Location_Of_MENU_DELIMETER(String menu) {
-        int location = menu.indexOf("-");
+        assertThatThrownBy(() -> orderValidator.validateFound(orderCalculator.findLocationOfMenuDelimeter(menu)))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 
-        assertThatThrownBy(() -> orderValidator.validateFound(location))
+    @ParameterizedTest
+    @DisplayName("메뉴이름을 찾지 못하면 예외 발생하는 테스트")
+    @CsvSource(value = {"-3,0", "-19,0"})
+    void validate_Menu(String menu, int locationOfMenuDelimeter) {
+        assertThatThrownBy(() ->
+                orderValidator.validateEmpty(orderCalculator.extractMenu(menu, locationOfMenuDelimeter)))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @DisplayName("개수가 숫자가 아니면 예외 발생하는 테스트")
+    @CsvSource(value = {"바비큐립-a,4", "타파스-!,3", "초코케이크-a,5", "타파스-,3", "제로콜라- ,4"})
+    void validate_Count_Is_Number(String menu, int count) {
+        assertThatThrownBy(() ->
+                orderValidator.validateCountIsNumber(orderCalculator.extractCount(menu, count)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

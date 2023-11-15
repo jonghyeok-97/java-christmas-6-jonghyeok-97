@@ -30,14 +30,18 @@ public class OrderCalculator {
         return menu;
     }
 
-    public int extractCount(String menuWithDelimeter, int locationOfDelimeter) {
-        String extractedCount = extract(menuWithDelimeter,locationOfDelimeter + 1, ZERO);
+    public String extractCount(String menuWithDelimeter, int locationOfDelimeter) throws IllegalArgumentException {
+        String extractedCount = extract(menuWithDelimeter,locationOfDelimeter + 1);
         orderValidator.validateCountIsNumber(extractedCount);
         orderValidator.validateExist(extractedCount);
-        return Integer.parseInt(extractedCount);
+        return extractedCount;
     }
 
     private String extract(String menuWithDelimeter, int first, int end) {
         return menuWithDelimeter.substring(first, end);
+    }
+
+    private String extract(String menuWithDelimeter, int first) {
+        return menuWithDelimeter.substring(first);
     }
 }
