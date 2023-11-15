@@ -3,6 +3,7 @@ package christmas.controller;
 import christmas.model.Order;
 import christmas.model.Benefits;
 import christmas.model.GiftEvent;
+import christmas.model.OrderGenerator;
 import christmas.model.VisitDate;
 import christmas.model.dateDiscount.WeekendDiscount;
 import christmas.model.dateDiscount.NormalDiscount;
@@ -27,9 +28,9 @@ public class EventPlanner {
         printOrderDetails(visitDate, order);
         GiftEvent gift = new GiftEvent(order);
         Benefits benefit = createBenefits(visitDate, order);
-        printOrderResultByDiscount(benefit, order, gift);
+        printOrderResultByBenefits(benefit, order, gift);
     }
-    private VisitDate createVisitDate () {
+    private VisitDate createVisitDate() {
         try {
             return new VisitDate(inputView.readDate());
         } catch (IllegalArgumentException error) {
@@ -38,9 +39,11 @@ public class EventPlanner {
         }
     }
 
-    private Order createOrder () {
+    private Order createOrder() {
         try {
-            return new Order(inputView.readOrder());
+            OrderGenerator orderGenerator = new OrderGenerator();
+            Order order = orderGenerator.createCountByOrdereMenu(inputView.readOrder());
+            return order;
         } catch (IllegalArgumentException error) {
             outputView.printError(error.getMessage());
             return createOrder();
@@ -57,7 +60,7 @@ public class EventPlanner {
                 new WeekendDiscount(visitDate, order), new SpecialDiscount(visitDate));
     }
 
-    private void printOrderResultByDiscount(Benefits benefit, Order order, GiftEvent gift) {
+    private void printOrderResultByBenefits(Benefits benefit, Order order, GiftEvent gift) {
         outputView.printTotalAmountBeforeDiscount(order);
         outputView.printPresent(gift);
         outputView.printBenefits(benefit, gift);

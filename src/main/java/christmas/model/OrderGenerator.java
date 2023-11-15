@@ -15,7 +15,7 @@ public class OrderGenerator {
         this.orderValidator = new OrderValidator();
     }
 
-    public Map<String, Integer> createCountByOrdereMenu(String input) throws IllegalArgumentException {
+    public Order createCountByOrdereMenu(String input) throws IllegalArgumentException {
         orderValidator.validateOrder(input);
         Map<String, Integer> countByOrderedMenu = new HashMap<>();
         List<String> menusWithMenuDelimeter = splitWithOrderDelimeter(input);
@@ -26,7 +26,7 @@ public class OrderGenerator {
             countByOrderedMenu.put(menu ,count);
         }
         orderValidator.validateMenu(menusWithMenuDelimeter.size(), countByOrderedMenu);
-        return countByOrderedMenu;
+        return new Order(countByOrderedMenu);
     }
 
     private List<String> splitWithOrderDelimeter(String input) {

@@ -10,9 +10,8 @@ public class Order {
     private final Map<String, Integer> countByOrderedMenu;
     private final int totalAmount;
 
-    public Order(String input) throws IllegalArgumentException {
-        OrderGenerator orderGenerator = new OrderGenerator();
-        this.countByOrderedMenu = orderGenerator.createCountByOrdereMenu(input);
+    public Order(Map<String, Integer> countByOrderedMenu) throws IllegalArgumentException {
+        this.countByOrderedMenu = countByOrderedMenu;
         this.totalAmount = calculateTotalAmount();
     }
 
